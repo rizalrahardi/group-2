@@ -1,5 +1,7 @@
 # Purwadhika Final Project Repository
 
+ini update readme yaaa
+
 This is monorepo contain frontend project using ReactJS and backend project using ExpressJS.
 
 ## Available Scripts
