@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
 const db = require("../models");
-
+const { authRouter } = require("./routes");
 // db.sequelize.sync({alter: true});
 
 const PORT = process.env.PORT || 8000;
@@ -18,7 +18,6 @@ app.use(
 );
 
 app.use(express.json());
-
 //#region API ROUTES
 
 // ===========================
@@ -33,6 +32,8 @@ app.get("/api/greetings", (req, res, next) => {
 		message: "Hello, Student !",
 	});
 });
+
+app.use("/api/auth", authRouter);
 
 // ===========================
 

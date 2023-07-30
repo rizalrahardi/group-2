@@ -3,6 +3,11 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Routes, Route, Link } from "react-router-dom";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import Navbar from "./components/Navbar";
 function App() {
 	const [message, setMessage] = useState("");
 
@@ -17,11 +22,20 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
+				{/* <img src={logo} className="App-logo" alt="logo" />
 				{message}
 				<ButtonGroup>
 					<Button colorScheme={"teal"}>test chakra</Button>
-				</ButtonGroup>
+				</ButtonGroup> */}
+
+				{/* <Link to="/login">Login</Link> */}
+				<Navbar />
+
+				<Routes>
+					<Route path="/login" element={<Login />} />
+					<Route path="/home" element={<Home />} />
+					<Route path="/admin" element={<Admin />} />
+				</Routes>
 			</header>
 		</div>
 	);
