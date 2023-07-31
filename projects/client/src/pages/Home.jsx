@@ -1,13 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const Home = () => {
 	const [user, setUser] = useState({});
-	console.log(user.username);
+	const navigate = useNavigate();
 
 	const fetchUser = async () => {
 		try {
 			const token = localStorage.getItem("token");
+			if (!token) {
+				navigate("/login");
+			}
 			const headers = {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
