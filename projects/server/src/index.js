@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
 const db = require("../models");
-const { authRouter } = require("./routes");
+const { authRouter, userRouter } = require("./routes");
 // db.sequelize.sync({alter: true});
 
 const PORT = process.env.PORT || 8000;
@@ -34,6 +34,7 @@ app.get("/api/greetings", (req, res, next) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 // ===========================
 
