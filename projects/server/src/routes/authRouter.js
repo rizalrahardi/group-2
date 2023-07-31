@@ -12,5 +12,18 @@ router.post(
 	authController.login
 );
 router.get("/user", auth.verifyToken, authController.getUserLogin);
+router.put(
+	"/password",
+	validateAuth.forgotPasswordRules,
+	errorValidate,
+	authController.forgotPassword
+)
+router.patch(
+	"/password",
+	validateAuth.resetPasswordRules,
+	errorValidate,
+	authController.resetPassword
+)
+
 
 module.exports = router;
