@@ -84,6 +84,7 @@ const Login = () => {
 						onChange={handleInputChange}
 					/>
 				</FormControl>
+
 				<Button
 					type="submit"
 					colorScheme="teal"
@@ -94,6 +95,13 @@ const Login = () => {
 					Login
 				</Button>
 			</form>
+			<Button
+				colorScheme="teal"
+				variant={"ghost"}
+				onClick={() => navigate("/forgot-password")}
+			>
+				Forgot password?
+			</Button>
 		</Box>
 	);
 };
