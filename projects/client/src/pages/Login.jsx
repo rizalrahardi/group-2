@@ -9,15 +9,17 @@ import {
 	Heading,
 	Alert,
 	AlertIcon,
+	InputRightElement,
+	InputGroup,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
+import { AiFillEye, AiFillEyeInvisible, AiOutlineUser } from "react-icons/ai";
 const Login = () => {
-	// const [formData, setFormData] = useState({ username: "", password: "" });
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [formData, setFormData] = useState({});
 	const navigate = useNavigate();
+	const [showPassword, setShowPassword] = useState(false);
 
 	const handleInputChange = (e) => {
 		setFormData((prevFormData) => ({
@@ -68,21 +70,49 @@ const Login = () => {
 			<form onSubmit={handleSubmit}>
 				<FormControl id="username" isRequired>
 					<FormLabel>Username</FormLabel>
-					<Input
-						type="text"
-						name="username"
-						value={formData.username}
-						onChange={handleInputChange}
-					/>
+					<InputGroup>
+						<Input
+							type="text"
+							name="username"
+							value={formData.username}
+							onChange={handleInputChange}
+						/>
+						<InputRightElement width="3.5rem">
+							<Button
+								size={"md"}
+								bg="transparent"
+								_focus={{ outline: "none" }}
+								_active={{ outline: "none" }}
+								_hover={{ color: "teal.500" }}
+							>
+								<AiOutlineUser />
+							</Button>
+						</InputRightElement>
+					</InputGroup>
 				</FormControl>
 				<FormControl id="password" mt={4} isRequired>
 					<FormLabel>Password</FormLabel>
-					<Input
-						type="password"
-						name="password"
-						value={formData.password}
-						onChange={handleInputChange}
-					/>
+					<InputGroup>
+						<Input
+							type={showPassword ? "text" : "password"}
+							name="password"
+							value={formData.password}
+							onChange={handleInputChange}
+						/>
+						<InputRightElement width="3.5rem">
+							<Button
+								h="1.75rem"
+								size="md"
+								onClick={() => setShowPassword(!showPassword)}
+								bg="transparent"
+								_focus={{ outline: "none" }}
+								_active={{ outline: "none" }}
+								_hover={{ color: "teal.500" }}
+							>
+								{showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+							</Button>
+						</InputRightElement>
+					</InputGroup>
 				</FormControl>
 
 				<Button

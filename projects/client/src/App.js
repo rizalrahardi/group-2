@@ -1,24 +1,22 @@
-import axios from "axios";
-import logo from "./logo.svg";
+// import axios from "axios";
 import "./App.css";
-import { useEffect, useState } from "react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
-import { Routes, Route, Link } from "react-router-dom";
+// import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Navbar from "./components/Navbar";
 function App() {
-	const [message, setMessage] = useState("");
+	// const [message, setMessage] = useState("");
 
-	useEffect(() => {
-		(async () => {
-			const { data } = await axios.get(
-				`${process.env.REACT_APP_API_BASE_URL}/greetings`
-			);
-			setMessage(data?.message || "");
-		})();
-	}, []);
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const { data } = await axios.get(
+	// 			`${process.env.REACT_APP_API_BASE_URL}/greetings`
+	// 		);
+	// 		setMessage(data?.message || "");
+	// 	})();
+	// }, []);
 	return (
 		<div className="App">
 			<header className="App-header">
