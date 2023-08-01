@@ -1,7 +1,51 @@
 const { User, sequelize } = require("../../models");
 const { hashedPassword } = require("../services/utils");
 const fs = require("fs");
+const {Op} = require("sequelize");
 const userController = {
+	getAllCashier: async (req,res) => {
+		try {
+			const { sort, username, isActive, search } = req.query;
+		
+			const whereCondition = {
+				role: "cashier",
+			};
+
+			if (isActive === "true" || isActive === "false") {
+			  whereCondition.isActive = isActive === "true";
+			}
+		
+			if (search) {
+			  whereCondition.username = { [Op.like]: `%${search}%` };
+			}
+		
+			const orderCriteria = [];
+			if (sort === "oldest") {
+			  orderCriteria.push(["createdAt", "ASC"]);
+			} else if (sort === "newest") {
+			  orderCriteria.push(["createdAt", "DESC"]);
+			} else if (username === "a-z") {
+			  orderCriteria.push(["username", "ASC"]);
+			} else if (username === "z-a") {
+			  orderCriteria.push(["username", "DESC"]);
+			}
+		
+			const cashiers = await User.findAll({
+			  where: whereCondition,
+			  order: orderCriteria,
+			});
+		
+			return res.status(200).json({
+			  message: "Success",
+			  cashiers,
+			});
+		  } catch (error) {
+			console.error(error);
+			return res.status(500).json({ message: "Internal server error" });
+		  }
+		
+	},
+
 	createCashier: async (req, res) => {
 		try {
 			const { username, email, password, role, isActive } = req.body;

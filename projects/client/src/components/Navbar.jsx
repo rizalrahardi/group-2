@@ -5,75 +5,121 @@ import {
 	Avatar,
 	HStack,
 	IconButton,
-	Button,
 	Menu,
 	MenuButton,
 	MenuList,
 	MenuItem,
 	MenuDivider,
-	useDisclosure,
 	useColorModeValue,
-	Stack,
+	Text,
 	Image,
+	VStack,
+	Button
 } from "@chakra-ui/react";
-// import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { MdClose } from "react-icons/md";
-import { useLocation } from "react-router-dom";
+import {
+	FiMenu,
+	FiBell,
+	FiChevronDown,
+	FiUser
+  } from "react-icons/fi"
+
 import logo from "../assets/images/logo-nav.png";
-export default function Simple() {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const location = useLocation();
-	const isLoginPage = location.pathname === "/login";
+import { useNavigate } from "react-router-dom";
 
+const MobileNav = ({user, onOpen, ...rest }) => {
+	const navgite = useNavigate();
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		navgite("/login");
+	}
 	return (
-		<>
-			{!isLoginPage && (
-				<Box bg={"gray.100"} px={20}>
-					<Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-						<IconButton
-							size={"md"}
-							icon={isOpen ? <MdClose /> : <RxHamburgerMenu />}
-							aria-label={"Open Menu"}
-							display={{ md: "none" }}
-							onClick={isOpen ? onClose : onOpen}
-						/>
-						<HStack spacing={8} alignItems={"center"}>
-							<Image src={logo} alt="logo" inlineSize={"3xs"} />
-						</HStack>
-						<Flex alignItems={"center"}>
-							<Menu>
-								<MenuButton
-									as={Button}
-									rounded={"full"}
-									variant={"link"}
-									cursor={"pointer"}
-									minW={0}
-								>
-									<Avatar
-										size={"md"}
-										src={
-											"https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-										}
-									/>
-								</MenuButton>
-								<MenuList>
-									<MenuItem>Link 1</MenuItem>
-									<MenuItem>Link 2</MenuItem>
-									<MenuDivider />
-									<MenuItem>Link 3</MenuItem>
-								</MenuList>
-							</Menu>
-						</Flex>
-					</Flex>
+	  <Flex
+		ml={{ base: 0, md: 60 }}
+		px={{ base: 4, md: 4 }}
+		height="20"
+		alignItems="center"
+		bg={useColorModeValue("white", "gray.900")}
+		borderBottomWidth="1px"
+		borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+		justifyContent={{ base: "space-between", md: "flex-end" }}
+		{...rest}
+	  >
+		<IconButton
+		  display={{ base: "flex", md: "none" }}
+		  onClick={onOpen}
+		  variant="outline"
+		  aria-label="open menu"
+		  icon={<FiMenu />}
+		/>
+  
+		<Text
+		  display={{ base: "flex", md: "none" }}
+		  fontSize="2xl"
+		  fontFamily="monospace"
+		  fontWeight="bold"
+		  
+		>
+		  <Image src={logo} inlineSize={"200px"} />
+		</Text>
+  
+		<HStack spacing={{ base: "0", md: "6" }}>
+		  <IconButton
+			size="lg"
+			variant="ghost"
+			aria-label="open menu"
+			icon={<FiBell />}
+		  />
+		  <Flex alignItems={"center"}>
+			<Menu>
+			  <MenuButton
+				py={2}
+				transition="all 0.3s"
+				_focus={{ boxShadow: "none" }}
+			  >
+				<HStack>
+				{user.imgProfile ? (
+				  <Avatar
+					size={"md"}
+					src={user.imgProfile}
+				  />
 
-					{isOpen ? (
-						<Box pb={4} display={{ md: "none" }}>
-							<Stack as={"nav"} spacing={4}></Stack>
-						</Box>
-					) : null}
-				</Box>
-			)}
-		</>
-	);
-}
+				) : (
+				  <Avatar size={"md"} src=<FiUser/> />
+				)}
+				  <VStack
+					display={{ base: "none", md: "flex" }}
+					alignItems="flex-start"
+					spacing="1px"
+					ml="2"
+				  >
+					<Text fontSize="sm">{user.username}</Text>
+					<Text fontSize="xs" color="gray.600">
+					  {user.email}
+					</Text>
+				  </VStack>
+				  <Box display={{ base: "none", md: "flex" }}>
+					<FiChevronDown />
+				  </Box>
+				</HStack>
+			  </MenuButton>
+			  <MenuList
+				bg={useColorModeValue("white", "gray.900")}
+				borderColor={useColorModeValue("gray.200", "gray.700")}
+			  >
+				<MenuItem>Profile</MenuItem>
+				<MenuItem>Settings</MenuItem>
+				<MenuItem>Billing</MenuItem>
+				<MenuDivider />
+				<MenuItem>
+					<Button onClick={handleLogout}>
+						Sign out
+					</Button>
+				</MenuItem>
+			  </MenuList>
+			</Menu>
+		  </Flex>
+		</HStack>
+	  </Flex>
+	)
+  }
+export default MobileNav;  
