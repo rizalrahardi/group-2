@@ -10,10 +10,11 @@ import axios from "axios"
 import MobileNav from "../components/Navbar"
 import SidebarContent from "../components/Sidebar"
 import FormCreateCashier from "../components/CreateCashier"
-import UpdateCashier from "../components/UpdateCashier"
+import UpdateCashier from "../components/Cashier"
 import Products from "../components/Products"
 import Report from "../components/Report"
 import HomeAdmin from "../components/HomeAdmin"
+import Category from "../components/Category"
 const Admin = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [user, setUser] = useState({});
@@ -41,12 +42,10 @@ const Admin = () => {
 		fetchUser();
 	}, []);
 
-	// Fungsi untuk mengubah konten yang sedang aktif berdasarkan tombol yang diklik
 	const handleContentChange = (content) => {
 		setActiveContent(content);
 	};
 
-	// Fungsi untuk menampilkan konten yang sesuai berdasarkan konten yang sedang aktif
 	const renderContent = () => {
 		switch (activeContent) {
 			case "home":
@@ -57,6 +56,8 @@ const Admin = () => {
 				return <UpdateCashier />;
 			case "products":
 				return <Products />;
+			case "categories":
+				return <Category />;
 			case "reports":
 				return <Report />;
 			default:
@@ -83,10 +84,8 @@ const Admin = () => {
 					<SidebarContent onClose={onClose} onContentChange={handleContentChange} />
 				</DrawerContent>
 			</Drawer>
-			{/* mobilenav */}
 			<MobileNav onOpen={onOpen} user={user} />
 			<Box ml={{ base: 0, md: 60 }} p="4">
-				{/* Content */}
 				{renderContent()}
 			</Box>
 		</Box>

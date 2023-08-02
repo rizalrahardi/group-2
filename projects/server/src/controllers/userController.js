@@ -10,15 +10,12 @@ const userController = {
 			const whereCondition = {
 				role: "cashier",
 			};
-
 			if (isActive === "true" || isActive === "false") {
 				whereCondition.isActive = isActive === "true";
 			}
-
 			if (search) {
 				whereCondition.username = { [Op.like]: `%${search}%` };
 			}
-
 			const orderCriteria = [];
 			if (sort === "oldest") {
 				orderCriteria.push(["createdAt", "ASC"]);
@@ -29,21 +26,17 @@ const userController = {
 			} else if (username === "z-a") {
 				orderCriteria.push(["username", "DESC"]);
 			}
-
 			const totalRows = await User.count({ where: whereCondition });
-
 			const currentPage = page ? parseInt(page) : 1;
 			const itemsPerPage = limit ? parseInt(limit) : 10;
 			const totalPages = Math.ceil(totalRows / itemsPerPage);
 			const offset = (currentPage - 1) * itemsPerPage;
-
 			const cashiers = await User.findAll({
 				where: whereCondition,
 				order: orderCriteria,
 				limit: itemsPerPage,
 				offset: offset,
 			});
-
 			return res.status(200).json({
 				message: "Success",
 				totalRows,
@@ -57,7 +50,6 @@ const userController = {
 			return res.status(500).json({ message: "Internal server error" });
 		}
 	},
-
 	createCashier: async (req, res) => {
 		try {
 			const { username, email, password, role, isActive } = req.body;
@@ -109,30 +101,6 @@ const userController = {
 			return res.status(500).json({ message: error.message });
 		}
 	},
-
-	// deactivateCashier: async (req, res) => {
-	// 	try {
-	// 		const { id } = req.params;
-	// 		console.log(id);
-	// 		const { isActive } = req.body;
-	// 		await sequelize.transaction(async (t) => {
-	// 			const user = await User.update(
-	// 				{
-	// 					isActive,
-	// 				},
-	// 				{ where: { id }, transaction: t }
-	// 			);
-	// 			return res.status(200).json({
-	// 				message: "User updated successfully",
-	// 				cashier: user,
-	// 			});
-	// 		});
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		return res.status(500).json({ message: error.message });
-	// 	}
-	// },
-
 	changeAvatarCashier: async (req, res) => {
 		try {
 			const { id } = req.User;

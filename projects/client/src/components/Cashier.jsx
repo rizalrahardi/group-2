@@ -17,8 +17,7 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    InputGroup,
-    InputRightElement
+    useToast
 } from "@chakra-ui/react";
 import { EditIcon, SearchIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -32,18 +31,16 @@ const UpdateCashier = () => {
     const [editingCashier, setEditingCashier] = useState(null);
     const [modal, setModal] = useState(false);
     const [activeFilter, setActiveFilter] = useState("");
-    const [searchQuery, setSearchQuery] = useState(""); // State untuk kata kunci pencarian
+    const [searchQuery, setSearchQuery] = useState("");
     const [page, setPage] = useState(1);
-    // const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
+    const toast = useToast();
     const handleModalOpen = () => {
         setModal(true);
     }
     const handleModalClose = () => {
         setModal(false);
     }
-
-
     const fetchCashiers = async (queryParams) => {
         try {
             const headers = {
@@ -55,8 +52,6 @@ const UpdateCashier = () => {
             });
             setCashiers(data.cashiers);
             setTotalPages(data.totalPages);
-            console.log("totalpages", data.totalPages)
-            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -86,13 +81,21 @@ const UpdateCashier = () => {
             await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/user/cashier/${cashier.id}`, cashier);
             setEditingCashier(null);
             fetchCashiers();
-            alert("Cashier updated successfully!");
+            toast({
+                title: "Update cashier success",
+                status: "success",
+                duration: 3000,
+                isClosable: true
+            })
         } catch (error) {
-            console.error(error);
-            alert("An error occurred while updating cashier.");
+            toast({
+                title: "Update cashier failed",
+                status: "error",
+                duration: 3000,
+                isClosable: true
+            })
         }
     };
-
     const handleCancel = () => {
         setEditingCashier(null);
     };
@@ -165,6 +168,7 @@ const UpdateCashier = () => {
                             <Td>
                                 {editingCashier && editingCashier.id === cashier.id ? (
                                     <Input
+                                        disabled
                                         type="text"
                                         name="role"
                                         value={editingCashier.role}

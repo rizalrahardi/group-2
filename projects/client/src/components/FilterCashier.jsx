@@ -27,7 +27,7 @@ const FilterCashier = ({ handleFilter, activeFilter, searchQuery, setSearchQuery
                 placeholder="Search..."
             />
             <Button
-                mr={2}
+                mx={2}
                 colorScheme={isActive("username=a-z") ? "teal" : "gray"}
                 onClick={() => handleFilter("username=a-z")}
             >

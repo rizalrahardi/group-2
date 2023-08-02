@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Container, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Stack, Tag, TagLabel, Text } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
 const Products = () => {
@@ -52,7 +52,7 @@ const Products = () => {
     }, [search, categoryId, price, sort, name, page, limit]);
 
     return (
-        <Container maxW="xl" py="8">
+        <>
             <FilterProducts
                 search={search}
                 setSearch={setSearch}
@@ -68,21 +68,41 @@ const Products = () => {
             <Text fontSize="2xl" fontWeight="bold" mb="4">
                 Products
             </Text>
-            {product.map((item) => (
-                <Box key={item.id} borderWidth="1px" rounded="lg" p="4" mb="4">
-                    <Text fontSize="lg" fontWeight="bold">
-                        {item.name}
-                    </Text>
-                    <Text fontSize="md" color="gray.600">
-                        Price: {item.price}
-                    </Text>
-                    <Text fontSize="md" color="gray.600">
-                        Category: {item.Category.name}
-                    </Text>
-                </Box>
-            ))}
+            <Flex flexWrap="wrap" alignItems={'center'} justifyContent='center' gap={4}>
+                {product.map((item) => (
+
+                    <Card maxW='sm'>
+                        <CardBody>
+                            <Image
+                                src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                                alt='Green double couch with wooden legs'
+                                borderRadius='lg'
+                            />
+                            <Stack mt='6' spacing='3'>
+                                <Heading size='md'>{item.name}</Heading>
+                                <Center>
+                                    <Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}>
+                                        {item.Category.name}
+                                    </Text>
+                                </Center>
+                                <Text color='teal.600' fontSize='2xl'>
+                                    Rp. {item.price}
+                                </Text>
+                            </Stack>
+                        </CardBody>
+                        <Divider />
+                        <CardFooter>
+                            <ButtonGroup spacing='2'>
+                                <Button variant='solid' colorScheme='teal'>
+                                    Add to cart
+                                </Button>
+                            </ButtonGroup>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </Flex >
             <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
-        </Container>
+        </>
     );
 };
 

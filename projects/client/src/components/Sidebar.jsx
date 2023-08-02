@@ -8,7 +8,6 @@ import {
     Image,
     Button,
 } from "@chakra-ui/react"
-import { IoCreateOutline } from "react-icons/io5"
 import { GrDocumentUpdate } from "react-icons/gr"
 import { AiOutlineDatabase } from "react-icons/ai"
 import { TbReportSearch } from "react-icons/tb"
@@ -33,10 +32,10 @@ const SidebarContent = ({ onContentChange, onClose, ...rest }) => {
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
             <Button width={"90%"} my={4} onClick={() => onContentChange("home")}><FiHome /> Home</Button>
-            <Button width={"90%"} my={4} onClick={() => onContentChange("create-cashier")}><IoCreateOutline /> Create Cashier</Button>
-            <Button width={"90%"} my={4} onClick={() => onContentChange("update-cashier")}><GrDocumentUpdate /> Update Cashier</Button>
-            <Button width={"90%"} my={4} onClick={() => onContentChange("products")}><AiOutlineDatabase /> Products</Button>
-            <Button width={"90%"} my={4} onClick={() => onContentChange("reports")}><TbReportSearch /> Reports</Button>
+            <Button width={"90%"} my={4} onClick={() => onContentChange("update-cashier")}><GrDocumentUpdate />Cashier</Button>
+            <Button width={"90%"} my={4} onClick={() => onContentChange("products")}><AiOutlineDatabase />Products</Button>
+            <Button width={"90%"} my={4} onClick={() => onContentChange("categories")}><AiOutlineDatabase />Categories</Button>
+            <Button width={"90%"} my={4} onClick={() => onContentChange("reports")}><TbReportSearch />Reports</Button>
 
         </Box>
     )
