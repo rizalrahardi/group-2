@@ -1,5 +1,6 @@
-const { Product, Category } = require("../../models");
+const { Product, Category, sequelize } = require("../../models");
 const { Op } = require("sequelize");
+const fs = require("fs");
 const productController = {
 	getProductList: async (req, res) => {
 		try {
@@ -58,6 +59,19 @@ const productController = {
 		} catch (error) {
 			console.log(error);
 			return res.status(500).json({ message: "Error retrieving product list" });
+		}
+	},
+
+	getCategoryList: async (req, res) => {
+		try {
+			const result = await Category.findAll()
+			return res.status(200).json({
+				message: "Category list retrieved successfully",
+				result
+			})
+		} catch (error) {
+			console.log(error);
+			return res.status(500).json({ message: "Error retrieving category list" });
 		}
 	},
 	createCategory: async (req, res) => {
@@ -153,6 +167,7 @@ const productController = {
 			})
 		}
 		catch (error) {
+			console.log(error)
 			return res.status(500).json({
 				message: error.message
 			})
@@ -160,9 +175,14 @@ const productController = {
 	},
 	editProduct: async (req, res) => {
 		try {
+			const id = req.params.id
+			const product = await Product.findByPk(id)
+			const oldProductImg = product.productImg
+			if (oldProductImg) {
+				fs.unlinkSync(oldProductImg)
+			}
 			const { name, price, quantity, categoryId, isActive } = req.body;
 			const productImg = req.file.path
-
 			await sequelize.transaction(async (t) => {
 				const result = await Product.update({
 					name,
@@ -174,7 +194,7 @@ const productController = {
 				},
 					{
 						where: {
-							id: req.params.id
+							id: id
 						}
 					}, { transaction: t })
 				return res.status(200).json({
@@ -183,6 +203,28 @@ const productController = {
 			})
 		}
 		catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	deleteProduct: async (req, res) => {
+		try {
+			await sequelize.transaction(async (t) => {
+				const result = await Product.update({
+					isActive: false,
+				},
+					{
+						where: {
+							id: req.params.id
+						}
+					}, { transaction: t })
+				return res.status(200).json({
+					message: "Product successfully updated."
+
+				})
+			})
+		} catch (error) {
 			return res.status(500).json({
 				message: error.message
 			})

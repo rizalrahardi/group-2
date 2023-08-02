@@ -1,4 +1,7 @@
-require("dotenv/config");
+const path = require("path");
+require("dotenv").config({
+	path: path.resolve(__dirname, "../.env"),
+});
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
@@ -13,7 +16,7 @@ app.use(
 	cors({
 		origin: [
 			process.env.WHITELISTED_DOMAIN &&
-				process.env.WHITELISTED_DOMAIN.split(","),
+			process.env.WHITELISTED_DOMAIN.split(","),
 		],
 	})
 );
@@ -37,6 +40,8 @@ app.get("/api/greetings", (req, res, next) => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/public", express.static(path.resolve(__dirname, "../public")));
+
 
 // ===========================
 
@@ -65,10 +70,11 @@ app.use((err, req, res, next) => {
 const clientPath = "../../client/build";
 app.use(express.static(join(__dirname, clientPath)));
 
+
 // Serve the HTML page
-app.get("*", (req, res) => {
-	res.sendFile(join(__dirname, clientPath, "index.html"));
-});
+// app.get("*", (req, res) => {
+// 	res.sendFile(join(__dirname, clientPath, "index.html"));
+// });
 
 //#endregion
 

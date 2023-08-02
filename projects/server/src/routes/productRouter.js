@@ -6,7 +6,7 @@ const { multerUpload } = require("../middlewares/multer");
 const { validateProduct } = require("../services");
 
 router.get("/", verifyToken, productController.getProductList)
-module.exports = router
+router.get("/category", verifyToken, productController.getCategoryList)
 router.post(
     "/category",
     validateProduct.categoryRules,
@@ -36,6 +36,11 @@ router.patch(
     validateProduct.productRules,
     errorValidate,
     productController.editProduct
+)
+router.patch(
+    "/inactive/:id",
+    verifyToken,
+    productController.deleteProduct
 )
 
 module.exports = router;

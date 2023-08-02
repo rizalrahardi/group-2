@@ -17,7 +17,9 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    useToast
+    useToast,
+    Image,
+    Avatar
 } from "@chakra-ui/react";
 import { EditIcon, SearchIcon } from "@chakra-ui/icons";
 import axios from "axios";
@@ -121,6 +123,7 @@ const UpdateCashier = () => {
             <Table variant="striped" colorScheme="teal" mt={4}>
                 <Thead>
                     <Tr>
+                        <Th>Image</Th>
                         <Th>Username</Th>
                         <Th>Email</Th>
                         <Th>Role</Th>
@@ -131,6 +134,12 @@ const UpdateCashier = () => {
                 <Tbody>
                     {cashiers.map((cashier) => (
                         <Tr key={cashier.id}>
+                            <Td>{cashier.imgProfile ? (
+                                <Image borderRadius={"full"} src={`http://localhost:8000/${cashier.imgProfile}`} alt="avatar" boxSize="50px" />
+                            ) : (
+                                <Avatar />
+                            )}
+                            </Td>
                             <Td>
                                 {editingCashier && editingCashier.id === cashier.id ? (
                                     <Input

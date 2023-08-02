@@ -8,7 +8,7 @@ const hashedPassword = (password) => {
 };
 
 const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "1h" });
+	return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "24h" });
 };
 
 const decodeToken = (token) => {
