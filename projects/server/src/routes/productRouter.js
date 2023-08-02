@@ -1,10 +1,13 @@
+const router = require("express").Router();
+const {productController} = require('../controllers');
+const { verifyToken } = require("../middlewares/auth");
 const { productController } = require("../controllers");
 const { errorValidate } = require("../middlewares");
 const { multerUpload } = require("../middlewares/multer");
 const { validateProduct } = require("../services");
 
-const router = require("express").Router();
-
+router.get("/", verifyToken, productController.getProductList )
+module.exports = router
 router.post(
     "/category",
 	validateProduct.categoryRules,
