@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
 const db = require("../models");
+
 const { authRouter, userRouter, productRouter } = require("./routes");
 // db.sequelize.sync({alter: true});
 
