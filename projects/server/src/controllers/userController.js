@@ -1,49 +1,61 @@
 const { User, sequelize } = require("../../models");
 const { hashedPassword } = require("../services/utils");
 const fs = require("fs");
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 const userController = {
-	getAllCashier: async (req,res) => {
+	getAllCashier: async (req, res) => {
 		try {
-			const { sort, username, isActive, search } = req.query;
-		
+			const { sort, username, isActive, search, page, limit } = req.query;
+
 			const whereCondition = {
 				role: "cashier",
 			};
 
 			if (isActive === "true" || isActive === "false") {
-			  whereCondition.isActive = isActive === "true";
+				whereCondition.isActive = isActive === "true";
 			}
-		
+
 			if (search) {
-			  whereCondition.username = { [Op.like]: `%${search}%` };
+				whereCondition.username = { [Op.like]: `%${search}%` };
 			}
-		
+
 			const orderCriteria = [];
 			if (sort === "oldest") {
-			  orderCriteria.push(["createdAt", "ASC"]);
+				orderCriteria.push(["createdAt", "ASC"]);
 			} else if (sort === "newest") {
-			  orderCriteria.push(["createdAt", "DESC"]);
+				orderCriteria.push(["createdAt", "DESC"]);
 			} else if (username === "a-z") {
-			  orderCriteria.push(["username", "ASC"]);
+				orderCriteria.push(["username", "ASC"]);
 			} else if (username === "z-a") {
-			  orderCriteria.push(["username", "DESC"]);
+				orderCriteria.push(["username", "DESC"]);
 			}
-		
+
+			const totalRows = await User.count({ where: whereCondition });
+
+			const currentPage = page ? parseInt(page) : 1;
+			const itemsPerPage = limit ? parseInt(limit) : 10;
+			const totalPages = Math.ceil(totalRows / itemsPerPage);
+			const offset = (currentPage - 1) * itemsPerPage;
+
 			const cashiers = await User.findAll({
-			  where: whereCondition,
-			  order: orderCriteria,
+				where: whereCondition,
+				order: orderCriteria,
+				limit: itemsPerPage,
+				offset: offset,
 			});
-		
+
 			return res.status(200).json({
-			  message: "Success",
-			  cashiers,
+				message: "Success",
+				totalRows,
+				currentPage,
+				totalPages,
+				itemsPerPage,
+				cashiers,
 			});
-		  } catch (error) {
+		} catch (error) {
 			console.error(error);
 			return res.status(500).json({ message: "Internal server error" });
-		  }
-		
+		}
 	},
 
 	createCashier: async (req, res) => {
