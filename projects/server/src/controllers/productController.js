@@ -110,8 +110,6 @@ const productController = {
 					message: "Product's Category successfully changed!"
 				})
 			})
-
-
 		} catch (error) {
 			return res.status(500).json({
 				message: error.message

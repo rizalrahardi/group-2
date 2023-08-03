@@ -6,6 +6,7 @@ import Pagination from './Pagination';
 import CreateProduct from './CreateProduct';
 import EditProduct from './EditProduct';
 import ProductCard from './ProductCard';
+import { useLocation } from 'react-router-dom';
 const Products = () => {
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
@@ -18,6 +19,8 @@ const Products = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [modal, setModal] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
+    const location = useLocation();
+    const isAdminPage = location.pathname === '/admin';
     // Function to handle opening the Edit Product Modal
     const handleEditModalOpen = (product) => {
         setEditProduct(product);
@@ -103,10 +106,12 @@ const Products = () => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
+            {isAdminPage && (
 
-            <Button mb={4} colorScheme="teal" onClick={handleModalOpen}>
-                Create Product
-            </Button>
+                <Button mb={4} colorScheme="teal" onClick={handleModalOpen}>
+                    Create Product
+                </Button>
+            )}
             <Flex flexWrap="wrap" alignItems={'center'} justifyContent='center' gap={4}>
                 <Modal isOpen={modal} onClose={handleModalClose}>
                     <ModalOverlay />
