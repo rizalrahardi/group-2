@@ -23,7 +23,7 @@ const productController = {
 			}
 
 			const whereCondition = {
-				isActive: true,
+				// isActive: true,
 			};
 
 			if (search) {
@@ -62,7 +62,7 @@ const productController = {
 		}
 	},
 
-	getCategoryList: async (req, res) => {
+	getCategory: async (req, res) => {
 		try {
 			const result = await Category.findAll()
 			return res.status(200).json({
@@ -175,39 +175,48 @@ const productController = {
 	},
 	editProduct: async (req, res) => {
 		try {
-			const id = req.params.id
-			const product = await Product.findByPk(id)
-			const oldProductImg = product.productImg
-			if (oldProductImg) {
-				fs.unlinkSync(oldProductImg)
-			}
+			const id = req.params.id;
+			const product = await Product.findByPk(id);
 			const { name, price, quantity, categoryId, isActive } = req.body;
-			const productImg = req.file.path
+			let updateData = {
+				name: name,
+				price: price,
+				quantity: quantity,
+				categoryId: categoryId,
+				isActive: isActive
+			};
+
+			if (req.file && req.file.path) {
+				updateData.productImg = req.file.path;
+			}
+
+			// Cek apakah ada oldProductImg sebelum menghapusnya
+			if (product.productImg && fs.existsSync(product.productImg)) {
+				fs.unlinkSync(product.productImg);
+			}
+
 			await sequelize.transaction(async (t) => {
-				const result = await Product.update({
-					name,
-					price,
-					quantity,
-					categoryId,
-					productImg: productImg,
-					isActive
-				},
+				const result = await Product.update(
+					updateData,
 					{
 						where: {
 							id: id
 						}
-					}, { transaction: t })
+					},
+					{ transaction: t }
+				);
 				return res.status(200).json({
-					message: "Product successfully updated!"
-				})
-			})
-		}
-		catch (error) {
+					message: "Product successfully updated!",
+					data: updateData
+				});
+			});
+		} catch (error) {
 			return res.status(500).json({
 				message: error.message
-			})
+			});
 		}
 	},
+
 	deleteProduct: async (req, res) => {
 		try {
 			await sequelize.transaction(async (t) => {

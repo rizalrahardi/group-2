@@ -21,6 +21,9 @@ const ProductCard = ({ product, handleEditModalOpen }) => {
                             {product.Category.name}
                         </Text>
                     </Center>
+                    <Text color='teal.600'>
+                        {product.isActive ? <Text color='teal.600'>Active</Text> : <Text color={'red.600'}>Inactive</Text>}
+                    </Text>
                     <Text color='teal.600' fontSize='2xl'>
                         Rp. {product.price}
                     </Text>

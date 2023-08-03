@@ -19,8 +19,6 @@ const Admin = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [user, setUser] = useState({});
 	const [activeContent, setActiveContent] = useState("home")
-	console.log(user.username);
-
 	const fetchUser = async () => {
 		try {
 			const token = localStorage.getItem("token");

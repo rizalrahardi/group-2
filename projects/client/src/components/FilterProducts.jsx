@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Select, Flex, Button, Input } from '@chakra-ui/react';
+import axios from 'axios';
 
 const FilterProducts = ({
     search,
@@ -33,8 +34,30 @@ const FilterProducts = ({
         setName(e.target.value);
     }
 
+    const [category, setCategory] = useState([]);
+
+
+    const categories = async () => {
+        try {
+            const { data } = await axios.get(
+                'http://localhost:8000/api/product/category',
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            )
+            setCategory(data.result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        categories();
+    }, []);
     return (
-        <Box p="4" mb="4" borderWidth="1px" rounded="lg">
+        <Box p="4" mb="4" borderWidth="1px" rounded="lg" bg={'white'} my="4" color={'black'}>
             <Flex alignItems="center" mb="2">
                 <Input
                     placeholder="Search products..."
@@ -49,7 +72,9 @@ const FilterProducts = ({
                     mr="2"
                 >
                     <option value="">All Categories</option>
-                    {/* Add options for each category */}
+                    {category.map((item) => (
+                        <option key={item.id} value={item.id}>{item.name}</option>
+                    ))}
                 </Select>
                 <Select
                     placeholder="Select Price"

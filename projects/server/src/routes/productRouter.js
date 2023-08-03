@@ -6,25 +6,29 @@ const { multerUpload } = require("../middlewares/multer");
 const { validateProduct } = require("../services");
 
 router.get("/", verifyToken, productController.getProductList)
-router.get("/category", verifyToken, productController.getCategoryList)
+router.get("/category", verifyToken, productController.getCategory)
 router.post(
     "/category",
+    verifyToken,
     validateProduct.categoryRules,
     errorValidate,
     productController.createCategory
 )
 router.patch(
     "/category/:id",
+    verifyToken,
     validateProduct.categoryRules,
     errorValidate,
     productController.editCategory
 )
 router.delete(
     "/category/:id",
+    verifyToken,
     productController.deleteCategory
 )
 router.post(
     "/",
+    verifyToken,
     multerUpload.single("products"),
     validateProduct.productRules,
     errorValidate,
@@ -32,9 +36,8 @@ router.post(
 )
 router.patch(
     "/:id",
+    verifyToken,
     multerUpload.single("products"),
-    validateProduct.productRules,
-    errorValidate,
     productController.editProduct
 )
 router.patch(

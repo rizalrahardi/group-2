@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text } from '@chakra-ui/react';
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text, useColorModeValue } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
 import CreateProduct from './CreateProduct';
@@ -85,7 +85,7 @@ const Products = () => {
                 name={name}
                 setName={setName}
             />
-            <Text fontSize="2xl" fontWeight="bold" mb="4">
+            <Text fontSize="2xl" fontWeight="bold" mb="4" color={useColorModeValue('gray.800', 'white')}>
                 Products
             </Text>
             <Modal isOpen={!!editProduct} onClose={handleEditModalClose}>

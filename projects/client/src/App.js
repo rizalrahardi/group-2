@@ -16,7 +16,7 @@ function App() {
 			{/* <Navbar /> */}
 
 			<Routes>
-				<Route path="/" element={<Home />} />
+				<Route path="/home" element={<Home />} />
 				<Route path="/admin/*" element={<Admin />}>
 					{/* <Route path="/create-cashier" element={<FormCreateCashier />} /> */}
 				</Route>
