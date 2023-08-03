@@ -28,6 +28,7 @@ import { MdClose } from "react-icons/md";
 import FormCreateCashier from "./CreateCashier";
 import FilterCashier from "./FilterCashier";
 import Pagination from "./Pagination";
+import CashierTable from "./CashierTable";
 const UpdateCashier = () => {
     const [cashiers, setCashiers] = useState([]);
     const [editingCashier, setEditingCashier] = useState(null);
@@ -120,130 +121,13 @@ const UpdateCashier = () => {
             <br />
             <FilterCashier handleFilter={handleFilter} activeFilter={activeFilter} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <Pagination currentPage={page} totalPages={totalPages} onPageChange={onPageChange} />
-            <Table variant="striped" colorScheme="teal" mt={4}>
-                <Thead>
-                    <Tr>
-                        <Th>Image</Th>
-                        <Th>Username</Th>
-                        <Th>Email</Th>
-                        <Th>Role</Th>
-                        <Th>Active</Th>
-                        <Th>Action</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {cashiers.map((cashier) => (
-                        <Tr key={cashier.id}>
-                            <Td>{cashier.imgProfile ? (
-                                <Image borderRadius={"full"} src={`http://localhost:8000/${cashier.imgProfile}`} alt="avatar" boxSize="50px" />
-                            ) : (
-                                <Avatar />
-                            )}
-                            </Td>
-                            <Td>
-                                {editingCashier && editingCashier.id === cashier.id ? (
-                                    <Input
-                                        type="text"
-                                        name="username"
-                                        value={editingCashier.username}
-                                        onChange={(e) =>
-                                            setEditingCashier({
-                                                ...editingCashier,
-                                                username: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    cashier.username
-                                )}
-                            </Td>
-                            <Td>
-                                {editingCashier && editingCashier.id === cashier.id ? (
-                                    <Input
-                                        type="email"
-                                        name="email"
-                                        value={editingCashier.email}
-                                        onChange={(e) =>
-                                            setEditingCashier({
-                                                ...editingCashier,
-                                                email: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    cashier.email
-                                )}
-                            </Td>
-                            <Td>
-                                {editingCashier && editingCashier.id === cashier.id ? (
-                                    <Input
-                                        disabled
-                                        type="text"
-                                        name="role"
-                                        value={editingCashier.role}
-                                        onChange={(e) =>
-                                            setEditingCashier({
-                                                ...editingCashier,
-                                                role: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    cashier.role
-                                )}
-                            </Td>
-                            <Td>
-                                {editingCashier && editingCashier.id === cashier.id ? (
-                                    <Select
-                                        name="isActive"
-                                        value={editingCashier.isActive ? "true" : "false"}
-                                        onChange={(e) =>
-                                            setEditingCashier({
-                                                ...editingCashier,
-                                                isActive: e.target.value === "true" ? true : false,
-                                            })
-                                        }
-                                    >
-                                        <option value="true">Yes</option>
-                                        <option value="false">No</option>
-                                    </Select>
-                                ) : (
-                                    cashier.isActive ? "Yes" : "No"
-                                )}
-                            </Td>
-                            <Td>
-                                {editingCashier && editingCashier.id === cashier.id ? (
-                                    <>
-                                        <IconButton
-                                            aria-label="Save"
-                                            icon={<FiSave />}
-                                            colorScheme="green"
-                                            size="sm"
-                                            mr={2}
-                                            onClick={() => handleUpdate(editingCashier)}
-                                        />
-                                        <IconButton
-                                            aria-label="Cancel"
-                                            icon={<MdClose />}
-                                            colorScheme="red"
-                                            size="sm"
-                                            onClick={handleCancel}
-                                        />
-                                    </>
-                                ) : (
-                                    <IconButton
-                                        aria-label="Edit"
-                                        icon={<EditIcon />}
-                                        colorScheme="blue"
-                                        size="sm"
-                                        onClick={() => handleEdit(cashier)}
-                                    />
-                                )}
-                            </Td>
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+            <CashierTable
+                cashiers={cashiers}
+                editingCashier={editingCashier}
+                handleEdit={handleEdit}
+                handleUpdate={handleUpdate}
+                handleCancel={handleCancel}
+            />
         </Box>
     );
 };

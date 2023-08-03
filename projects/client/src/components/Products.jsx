@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Avatar, useToast, Box, Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text } from '@chakra-ui/react';
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
-import FormCreateCashier from './CreateCashier';
 import CreateProduct from './CreateProduct';
 import EditProduct from './EditProduct';
+import ProductCard from './ProductCard';
 const Products = () => {
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
@@ -18,7 +18,6 @@ const Products = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [modal, setModal] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
-    const toast = useToast();
     // Function to handle opening the Edit Product Modal
     const handleEditModalOpen = (product) => {
         setEditProduct(product);
@@ -71,42 +70,6 @@ const Products = () => {
     useEffect(() => {
         fetchProducts();
     }, [search, categoryId, price, sort, name, page, limit]);
-    //     try {
-    //         const headers = {
-    //             'Content-Type': 'multipart/form-data',
-    //             'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //         };
-
-    //         const { data } = await axios.patch(
-    //             `${process.env.REACT_APP_API_BASE_URL}/product/${updatedProduct.id}`,
-    //             updatedProduct,
-    //             { headers }
-    //         );
-
-    //         // Update the product list with the updated product data
-    //         const updatedProductList = product.map((item) =>
-    //             item.id === data.id ? data : item
-    //         );
-    //         setProduct(updatedProductList);
-
-    //         toast({
-    //             title: 'Success',
-    //             description: 'Product updated successfully!',
-    //             status: 'success',
-    //             duration: 3000,
-    //             isClosable: true,
-    //         });
-    //     } catch (error) {
-    //         console.error(error);
-    //         toast({
-    //             title: 'Error',
-    //             description: 'Failed to update product.',
-    //             status: 'error',
-    //             duration: 3000,
-    //             isClosable: true,
-    //         });
-    //     }
-    // };
 
     return (
         <>
@@ -131,12 +94,10 @@ const Products = () => {
                     <ModalHeader>Edit Product</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {/* Pass the product data to the EditProduct component */}
                         {editProduct && (
                             <EditProduct
                                 product={editProduct}
                                 handleModalClose={handleEditModalClose}
-                                // handleUpdateProduct={handleUpdateProduct}
                             />
                         )}
                     </ModalBody>
@@ -159,51 +120,13 @@ const Products = () => {
                 </Modal>
                 <br />
                 {product.map((item) => (
-
-                    <Card maxW='sm'>
-                        <CardBody>
-                            {item.productImg ? (
-                                <>
-                                    <Image
-                                        src={`http://localhost:8000/${item.productImg}`}
-                                        alt='Green double couch with wooden legs'
-                                        borderRadius='lg'
-                                    />
-                                    <Stack mt='6' spacing='3'>
-                                        <Heading size='md'>{item.name}</Heading>
-                                        <Center>
-                                            <Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}>
-                                                {item.Category.name}
-                                            </Text>
-                                        </Center>
-                                        <Text color='teal.600' fontSize='2xl'>
-                                            Rp. {item.price}
-                                        </Text>
-                                    </Stack>
-                                </>
-                            ) : (
-                                <><Avatar src='https://bit.ly/dan-abramov' /></>
-                            )}
-
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <ButtonGroup spacing='2'>
-                                <Button variant='solid' colorScheme='teal'>
-                                    Add to cart
-                                </Button>
-                                <Button
-                                    variant='solid'
-                                    colorScheme='teal'
-                                    onClick={() => handleEditModalOpen(item)}
-                                >
-                                    Edit
-                                </Button>
-                            </ButtonGroup>
-                        </CardFooter>
-                    </Card>
+                    <ProductCard
+                        key={item.id}
+                        product={item}
+                        handleEditModalOpen={handleEditModalOpen}
+                    />
                 ))}
-            </Flex >
+            </Flex>
             <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
     );
