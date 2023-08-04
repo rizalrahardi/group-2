@@ -26,7 +26,7 @@ const CreateProduct = () => {
     const categories = async () => {
         try {
             const { data } = await axios.get(
-                'http://localhost:8000/api/product/category',
+                `${process.env.REACT_APP_API_BASE_URL}/product/category`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const CreateProduct = () => {
             formData.append('isActive', isActive);
             formData.append('products', productImg);
 
-            await axios.post('http://localhost:8000/api/product', formData, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/product`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('token')}`

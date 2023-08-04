@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Transaction.init({
+    userId: DataTypes.INTEGER,
     totalPrice: DataTypes.FLOAT
   }, {
     sequelize,

@@ -96,7 +96,7 @@ export default function NavbarCashier({ user }) {
                                         <Image
                                             borderRadius={"full"}
                                             border={"2px"}
-                                            src={`http://localhost:8000/${user.imgProfile}`}
+                                            src={`${process.env.REACT_APP_API_BASE_URL}/${user.imgProfile}`}
                                             alt="avatar"
                                             objectFit="cover"
                                             boxSize="50px"
@@ -111,7 +111,7 @@ export default function NavbarCashier({ user }) {
                                         {user.imgProfile ? (
                                             <Image
                                                 borderRadius={"full"}
-                                                src={`http://localhost:8000/${user.imgProfile}`}
+                                                src={`${process.env.REACT_APP_API_BASE_URL}/${user.imgProfile}`}
                                                 alt="avatar"
                                                 objectFit="cover"
                                                 boxSize="150px"

@@ -1,8 +1,11 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/reducer/cartSlice';
 import { Card, CardBody, CardFooter, Stack, Heading, Center, Text, Divider, ButtonGroup, Button, Image, Avatar } from '@chakra-ui/react';
 const ProductCard = ({ product, handleEditModalOpen }) => {
     const location = useLocation();
+    const dispatch = useDispatch();
 
     const isAdminPage = location.pathname === '/admin';
     const isCashierPage = location.pathname === '/home';
@@ -11,7 +14,7 @@ const ProductCard = ({ product, handleEditModalOpen }) => {
             <CardBody>
                 {product.productImg ? (
                     <Image
-                        src={`http://localhost:8000/${product.productImg}`}
+                        src={`${process.env.REACT_APP_API_BASE_URL}/${product.productImg}`}
                         alt='Green double couch with wooden legs'
                         borderRadius='lg'
                     />
@@ -38,7 +41,7 @@ const ProductCard = ({ product, handleEditModalOpen }) => {
                 <ButtonGroup spacing='2'>
                     {isCashierPage && (
 
-                        <Button variant='solid' colorScheme='teal'>
+                        <Button onClick={() => dispatch(addToCart(product))} variant='solid' colorScheme='teal'>
                             Add to cart
                         </Button>
                     )}

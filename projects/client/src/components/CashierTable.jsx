@@ -36,7 +36,7 @@ const CashierTable = ({ cashiers, editingCashier, handleEdit, handleUpdate, hand
               {cashier.imgProfile ? (
                 <Image
                   borderRadius={"full"}
-                  src={`http://localhost:8000/${cashier.imgProfile}`}
+                  src={`${process.env.REACT_APP_API_BASE_URL}/${cashier.imgProfile}`}
                   alt="avatar"
                   boxSize="50px"
                 />

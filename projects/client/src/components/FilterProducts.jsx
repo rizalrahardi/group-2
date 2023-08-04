@@ -40,7 +40,7 @@ const FilterProducts = ({
     const categories = async () => {
         try {
             const { data } = await axios.get(
-                'http://localhost:8000/api/product/category',
+                `${process.env.REACT_APP_API_BASE_URL}/product/category`,
                 {
                     headers: {
                         'Content-Type': 'application/json',

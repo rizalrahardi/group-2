@@ -7,7 +7,7 @@ const cors = require("cors");
 const { join } = require("path");
 const db = require("../models");
 
-const { authRouter, userRouter, productRouter } = require("./routes");
+const { authRouter, userRouter, productRouter, transactionRouter } = require("./routes");
 // db.sequelize.sync({alter: true});
 
 const PORT = process.env.PORT || 8000;
@@ -40,7 +40,8 @@ app.get("/api/greetings", (req, res, next) => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
-app.use("/public", express.static(path.resolve(__dirname, "../public")));
+app.use("/api", transactionRouter)
+app.use("/api/public", express.static(path.resolve(__dirname, "../public")));
 
 
 // ===========================

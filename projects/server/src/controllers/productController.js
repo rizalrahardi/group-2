@@ -183,12 +183,9 @@ const productController = {
 				categoryId: categoryId,
 				isActive: isActive
 			};
-
 			if (req.file && req.file.path) {
 				updateData.productImg = req.file.path;
 			}
-
-			// Cek apakah ada oldProductImg sebelum menghapusnya
 			if (product.productImg && fs.existsSync(product.productImg)) {
 				fs.unlinkSync(product.productImg);
 			}
