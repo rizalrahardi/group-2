@@ -31,6 +31,7 @@ const SidebarContent = ({ onContentChange, onClose, ...rest }) => {
                 </Text>
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
+
             <Button width={"90%"} my={4} onClick={() => onContentChange("home")}><FiHome />Home</Button>
             <Button width={"90%"} my={4} onClick={() => onContentChange("update-cashier")}><GrDocumentUpdate />Cashier</Button>
             <Button width={"90%"} my={4} onClick={() => onContentChange("products")}><AiOutlineDatabase />Products</Button>

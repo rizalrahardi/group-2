@@ -1,6 +1,7 @@
 const { Product, Category, sequelize } = require("../../models");
 const { Op } = require("sequelize");
 const fs = require("fs");
+
 const productController = {
 	getProductList: async (req, res) => {
 		try {
@@ -22,9 +23,7 @@ const productController = {
 				orderCriteria.push(orderBy("createdAt", "desc"));
 			}
 
-			const whereCondition = {
-				// isActive: true,
-			};
+			const whereCondition = {};
 
 			if (search) {
 				whereCondition.name = {
@@ -61,7 +60,6 @@ const productController = {
 			return res.status(500).json({ message: "Error retrieving product list" });
 		}
 	},
-
 	getCategory: async (req, res) => {
 		try {
 			const result = await Category.findAll()

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Box, Select, Flex, Button, Input } from '@chakra-ui/react';
 import axios from 'axios';
@@ -75,6 +76,7 @@ const FilterProducts = ({
                     {category.map((item) => (
                         <option key={item.id} value={item.id}>{item.name}</option>
                     ))}
+
                 </Select>
                 <Select
                     placeholder="Select Price"

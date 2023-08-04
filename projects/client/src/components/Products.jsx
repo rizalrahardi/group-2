@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text, useColorModeValue } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
@@ -17,6 +18,7 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
+
     const [modal, setModal] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
     const location = useLocation();
@@ -36,6 +38,7 @@ const Products = () => {
     const handleModalClose = () => {
         setModal(false);
     }
+
 
     const fetchProducts = async () => {
         try {
@@ -132,7 +135,7 @@ const Products = () => {
                     />
                 ))}
             </Flex>
-            <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
     );
 };

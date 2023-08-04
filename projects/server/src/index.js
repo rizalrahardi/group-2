@@ -8,6 +8,7 @@ const { join } = require("path");
 const db = require("../models");
 
 const { authRouter, userRouter, productRouter, transactionRouter } = require("./routes");
+
 // db.sequelize.sync({alter: true});
 
 const PORT = process.env.PORT || 8000;

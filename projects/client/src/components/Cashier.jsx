@@ -17,6 +17,7 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
+
     useToast,
     Image,
     Avatar
@@ -29,6 +30,7 @@ import FormCreateCashier from "./CreateCashier";
 import FilterCashier from "./FilterCashier";
 import Pagination from "./Pagination";
 import CashierTable from "./CashierTable";
+
 const UpdateCashier = () => {
     const [cashiers, setCashiers] = useState([]);
     const [editingCashier, setEditingCashier] = useState(null);

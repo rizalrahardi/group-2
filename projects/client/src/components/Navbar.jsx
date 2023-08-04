@@ -23,10 +23,12 @@ import {
 	FiUser
 } from "react-icons/fi"
 
+
 import logo from "../assets/images/logo-nav.png";
 import { useNavigate } from "react-router-dom";
 
 const MobileNav = ({ user, onOpen, ...rest }) => {
+
 	const navgite = useNavigate();
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -124,4 +126,5 @@ const MobileNav = ({ user, onOpen, ...rest }) => {
 		</Flex>
 	)
 }
+
 export default MobileNav;  
