@@ -6,13 +6,14 @@ const categoryRules = [
 	body("name")
 		.notEmpty()
 		.withMessage("Category harus diisi")
-        .custom(async (value, {req}) => {
-            const category = await Category.findOne({ where: { name: value } });
-            if (category.name === value) {
-                    throw new Error("Category name is already exist");
-                }
-                req.category = category;
-        })
+    .custom(async (value, { req }) => {
+      const user = await Category.findOne({ where: { name: value } });
+      if (user) {
+          throw new Error("Category sudah ada");
+      }
+      req.user = user;
+  })
+        
 ];
 
 const productRules = [
