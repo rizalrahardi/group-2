@@ -46,7 +46,8 @@ const CategoryTable = () => {
           headers,
         }
       );
-      setCategories(data);
+      console.log(data)
+      setCategories(data.result);
     } catch (error) {
 
       console.error("Error fetching data:", error);

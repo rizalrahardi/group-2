@@ -14,7 +14,7 @@ import UpdateCashier from "../components/Cashier"
 import Products from "../components/Products"
 import Report from "../components/Report"
 import HomeAdmin from "../components/HomeAdmin"
-import Category from "../components/Category"
+import CategoryTable from "../components/Category"
 const Admin = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [user, setUser] = useState({});
@@ -56,7 +56,7 @@ const Admin = () => {
 			case "products":
 				return <Products />;
 			case "categories":
-				return <Category />;
+				return <CategoryTable />;
 			case "reports":
 				return <Report />;
 			default:
