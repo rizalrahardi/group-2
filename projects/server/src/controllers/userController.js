@@ -105,15 +105,17 @@ const userController = {
 		try {
 			const { id } = req.User;
 			const user = await User.findByPk(id);
-			const oldAvatar = user.imgProfile;
-			if (oldAvatar) {
-				fs.unlinkSync(oldAvatar);
+			let updateData = {};
+			if (req.file && req.file.path) {
+				updateData.imgProfile = req.file.path;
+			}
+
+			if (user.imgProfile && fs.existsSync(user.imgProfile)) {
+				fs.unlinkSync(user.imgProfile);
 			}
 			await sequelize.transaction(async (t) => {
 				await User.update(
-					{
-						imgProfile: req.file.path,
-					},
+					updateData,
 					{ where: { id: id } },
 					{ transaction: t }
 				);

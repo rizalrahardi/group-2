@@ -1,8 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import MobileNav from "../components/Navbar";
+import { Avatar, Box, Center, Drawer, DrawerContent, Flex, Image, Square, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import SidebarContent from "../components/Sidebar";
+import Products from "../components/Products";
+import NavbarCashier from "../components/NavbarCashier";
 const Home = () => {
 	const [user, setUser] = useState({});
+	const { isOpen, onOpen, onClose } = useDisclosure()
+	console.log(user)
 	const navigate = useNavigate();
 
 	const fetchUser = async () => {
@@ -20,7 +27,6 @@ const Home = () => {
 				{ headers }
 			);
 			setUser(data.user);
-			console.log(data);
 		} catch (error) {
 			console.log(error);
 		}
@@ -29,10 +35,18 @@ const Home = () => {
 		fetchUser();
 	}, []);
 	return (
-		<div>
-			<h1>hallo {user.username}</h1>
-			<h1>hallo</h1>
-		</div>
+		<>
+			<NavbarCashier user={user} />
+			<Flex color='white'>
+
+				<Box px={10} width={["100%", "100%", "75%"]} bg={useColorModeValue("gray.100", "gray.900")}>
+					<Products />
+				</Box>
+				<Box px={10} width={["100%", "100%", "25%"]} bg='green'>
+					<Text fontSize={"2xl"}>Transaction</Text>
+				</Box>
+			</Flex>
+		</>
 	);
 };
 

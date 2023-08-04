@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Stack, Tag, TagLabel, Text } from '@chakra-ui/react';
+
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text, useColorModeValue } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
+import CreateProduct from './CreateProduct';
+import EditProduct from './EditProduct';
+import ProductCard from './ProductCard';
+import { useLocation } from 'react-router-dom';
 const Products = () => {
     const [product, setProduct] = useState([]);
     const [search, setSearch] = useState('');
@@ -13,6 +18,27 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
+
+    const [modal, setModal] = useState(false);
+    const [editProduct, setEditProduct] = useState(null);
+    const location = useLocation();
+    const isAdminPage = location.pathname === '/admin';
+    // Function to handle opening the Edit Product Modal
+    const handleEditModalOpen = (product) => {
+        setEditProduct(product);
+    };
+
+    // Function to handle closing the Edit Product Modal
+    const handleEditModalClose = () => {
+        setEditProduct(null);
+    };
+    const handleModalOpen = () => {
+        setModal(true);
+    }
+    const handleModalClose = () => {
+        setModal(false);
+    }
+
 
     const fetchProducts = async () => {
         try {
@@ -39,7 +65,7 @@ const Products = () => {
             setProduct(data.products);
             setTotalPages(data.totalPages);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -65,43 +91,51 @@ const Products = () => {
                 name={name}
                 setName={setName}
             />
-            <Text fontSize="2xl" fontWeight="bold" mb="4">
+            <Text fontSize="2xl" fontWeight="bold" mb="4" color={useColorModeValue('gray.800', 'white')}>
                 Products
             </Text>
-            <Flex flexWrap="wrap" alignItems={'center'} justifyContent='center' gap={4}>
-                {product.map((item) => (
-
-                    <Card maxW='sm'>
-                        <CardBody>
-                            <Image
-                                src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                                alt='Green double couch with wooden legs'
-                                borderRadius='lg'
+            <Modal isOpen={!!editProduct} onClose={handleEditModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Product</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {editProduct && (
+                            <EditProduct
+                                product={editProduct}
+                                handleModalClose={handleEditModalClose}
                             />
-                            <Stack mt='6' spacing='3'>
-                                <Heading size='md'>{item.name}</Heading>
-                                <Center>
-                                    <Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}>
-                                        {item.Category.name}
-                                    </Text>
-                                </Center>
-                                <Text color='teal.600' fontSize='2xl'>
-                                    Rp. {item.price}
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <ButtonGroup spacing='2'>
-                                <Button variant='solid' colorScheme='teal'>
-                                    Add to cart
-                                </Button>
-                            </ButtonGroup>
-                        </CardFooter>
-                    </Card>
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+            {isAdminPage && (
+
+                <Button mb={4} colorScheme="teal" onClick={handleModalOpen}>
+                    Create Product
+                </Button>
+            )}
+            <Flex flexWrap="wrap" alignItems={'center'} justifyContent='center' gap={4}>
+                <Modal isOpen={modal} onClose={handleModalClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>Create Product</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <CreateProduct handleModalClose={handleModalClose} />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+                <br />
+                {product.map((item) => (
+                    <ProductCard
+                        key={item.id}
+                        product={item}
+                        handleEditModalOpen={handleEditModalOpen}
+                    />
                 ))}
-            </Flex >
-            <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+            </Flex>
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
     );
 };

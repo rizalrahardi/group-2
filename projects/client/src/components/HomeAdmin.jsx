@@ -1,8 +1,12 @@
 import React from 'react'
+// import CreateProduct from './CreateProduct'
 
 const HomeAdmin = () => {
     return (
-        <div>HomeAdmin</div>
+        <div>
+            <h1>Home Admin</h1>
+            {/* <CreateProduct /> */}
+        </div>
     )
 }
 

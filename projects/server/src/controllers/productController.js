@@ -1,6 +1,6 @@
-const { Product, Category, User, sequelize } = require("../../models");
+const { Product, Category, sequelize } = require("../../models");
 const { Op } = require("sequelize");
-const fs = require('fs')
+const fs = require("fs");
 
 const productController = {
 	getProductList: async (req, res) => {
@@ -23,9 +23,7 @@ const productController = {
 				orderCriteria.push(orderBy("createdAt", "desc"));
 			}
 
-			const whereCondition = {
-				isActive: true,
-			};
+			const whereCondition = {};
 
 			if (search) {
 				whereCondition.name = {
@@ -62,210 +60,178 @@ const productController = {
 			return res.status(500).json({ message: "Error retrieving product list" });
 		}
 	},
-    createCategory: async (req, res) => {
-        const user_id = req.User.id
-        
-        const isVerifiedUser = await User.findOne({
-            where: {id: user_id}})
-            
-            if (isVerifiedUser.role !== "admin"){
-                return res.status(404).json({
-                    message: 'Only admin who can create category',
-                });
-            }
-            
-            const {name} = req.body
-            try{
-                await sequelize.transaction (async (t) => {
-                const result = await Category.create({
-                    name: name
-                }, {transaction: t})
-                console.log(result)
-                return res.status(200).json({
-                    message: "Product's Category successfully created!"
-                })
-            })
-        
-        }catch(error){
-            console.log(error)
-            return res.status(500).json({
-                message: error.message
-            })
-        }
-    },
-    editCategory: async (req, res) => {
-        const user_id = req.User.id
-        
-        const isVerifiedUser = await User.findOne({
-            where: {id: user_id}})
-            
-            if (isVerifiedUser.role !== "admin"){
-                return res.status(404).json({
-                    message: 'Only admin who can edit category',
-                });
-            }
+	getCategory: async (req, res) => {
+		try {
+			const result = await Category.findAll()
+			return res.status(200).json({
+				message: "Category list retrieved successfully",
+				result
+			})
+		} catch (error) {
+			console.log(error);
+			return res.status(500).json({ message: "Error retrieving category list" });
+		}
+	},
+	createCategory: async (req, res) => {
+		const { name } = req.body
 
-        const {name} = req.body
-        try{
-            await sequelize.transaction (async (t) => {
-                const result = await Category.update({
-                    name
-                },{
-                    where: {id: req.params.id}
-                }, {transaction: t})
-    
-                return res.status(200).json({
-                    message: "Product's Category successfully changed!"
-                })
-            })
-            
+		try {
+			await sequelize.transaction(async (t) => {
+				const result = await Category.create({
+					name: name
+				}, { transaction: t })
+				console.log(result)
+				return res.status(200).json({
+					message: "Product's Category successfully created!"
+				})
+			})
 
-        }catch(error){
-            return res.status(500).json({
-                message: error.message
-            })
-        }
-    },
-    getCategory: async (req, res) => {
-            try{
-                await sequelize.transaction(async (t) => {
-                    const data = await Category.findAll({
-                        attributes: ["id", "name"]
-                    }, {transaction: t})
-                    
-                    return res.status(200).json(data)
-                })
-            }catch(err){
-                return res.status(err.statusCode || 500).json({
-                    message: err.message})
-                }
-    },
-    deleteCategory: async(req, res) => {
-        const user_id = req.User.id
-        
-        const isVerifiedUser = await User.findOne({
-            where: {id: user_id}})
-            
-            if (isVerifiedUser.role !== "admin"){
-                return res.status(404).json({
-                    message: 'Only admin who can delete category',
-                });
-            }
-        try{
-            await sequelize.transaction (async (t) => {
 
-                const result = await Product.update({
-                    isActive: false,
-                  },
-                  {
-                    where: {
-                      categoryId: req.params.id
-                    }
-                  })
-                  Category.destroy({
-                    where: {id: req.params.id}
-                }, {transaction: t})
-    
-                return res.status(200).json({
-                    message: "Product's Category successfully deleted."
-                })
-            })
+		} catch (error) {
+			console.log(error)
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	editCategory: async (req, res) => {
+		const { name } = req.body
+		try {
+			await sequelize.transaction(async (t) => {
+				const result = await Category.update({
+					name
+				}, {
+					where: { id: req.params.id }
+				}, { transaction: t })
 
-        }catch(error){
-            return res.status(500).json({
-                message: error.message
-            })
-        }
-    },
-    createProduct: async (req, res) => {
-        const user_id = req.User.id
-        
-        const isVerifiedUser = await User.findOne({
-            where: {id: user_id}})
-            
-            if (isVerifiedUser.role !== "admin"){
-                return res.status(404).json({
-                    message: 'Only admin who can create product',
-                });
-            }
+				return res.status(200).json({
+					message: "Product's Category successfully changed!"
+				})
+			})
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	deleteCategory: async (req, res) => {
+		try {
+			await sequelize.transaction(async (t) => {
 
-        try{
-            const {name, price, quantity, categoryId, isActive} = req.body
-            const productImg = req.file.path
+				const result = await Product.update({
+					isActive: false,
+				},
+					{
+						where: {
+							categoryId: req.params.id
+						}
+					})
+				Category.destroy({
+					where: { id: req.params.id }
+				}, { transaction: t })
 
-            await sequelize.transaction (async (t) => {
-                const result = await Product.create({
-                    name,
-                    price,
-                    quantity,
-                    categoryId,
-                    productImg: productImg,
-                    isActive
-                }, {transaction: t})
-        
-                return res.status(200).json({
-                    message: "Product successfully created!",
-                    data: result
-                })
-            })
-        }
-        catch(error){
-            return res.status(500).json({
-                message: error.message
-            })
-        }
-    },
-    editProduct: async (req, res) => {
-        const user_id = req.User.id
-        
-        const isVerifiedUser = await User.findOne({
-            where: {id: user_id}})
-            
-            if (isVerifiedUser.role !== "admin"){
-                return res.status(404).json({
-                    message: 'Only admin who can edit product',
-                });
-            }
+				return res.status(200).json({
+					message: "Product's Category successfully deleted."
+				})
+			})
 
-        try{
-            const {name, price, quantity, categoryId, isActive} = req.body;
-            const productImg = req.file.path
-            
-            const oldProduct = await Product.findByPk(req.params.id)
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	createProduct: async (req, res) => {
+		try {
+			const { name, price, quantity, categoryId, isActive } = req.body
+			const productImg = req.file.path
 
-            await sequelize.transaction (async (t) => {
-                const result = await Product.update({
-                    name,
-                    price,
-                    quantity,
-                    categoryId,
-                    productImg: productImg,
-                    isActive
-                },
-                {
-                    where: {
-                        id: req.params.id
-                    }
-                }, {transaction: t})
+			await sequelize.transaction(async (t) => {
+				const result = await Product.create({
+					name,
+					price,
+					quantity,
+					categoryId,
+					productImg: productImg,
+					isActive
+				}, { transaction: t })
 
-                if (oldProduct && oldProduct.productImg) {
-                    fs.unlink(oldProduct.productImg, (err) => {
-                        if (err) {
-                            console.error('Error deleting the old file:', err);
-                        }
-                    });
-                }
-                    return res.status(200).json({
-                        message: "Product successfully updated!"
-                    })
-            })
-        }
-        catch(error){
-            return res.status(500).json({
-                message: error.message
-            })
-        }
-    }
+				return res.status(200).json({
+					message: "Product successfully created!",
+					data: result
+				})
+			})
+		}
+		catch (error) {
+			console.log(error)
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	editProduct: async (req, res) => {
+		try {
+			const id = req.params.id;
+			const product = await Product.findByPk(id);
+			const { name, price, quantity, categoryId, isActive } = req.body;
+			let updateData = {
+				name: name,
+				price: price,
+				quantity: quantity,
+				categoryId: categoryId,
+				isActive: isActive
+			};
+			if (req.file && req.file.path) {
+				updateData.productImg = req.file.path;
+			}
+			if (product.productImg && fs.existsSync(product.productImg)) {
+				fs.unlinkSync(product.productImg);
+			}
+
+			await sequelize.transaction(async (t) => {
+				const result = await Product.update(
+					updateData,
+					{
+						where: {
+							id: id
+						}
+					},
+					{ transaction: t }
+				);
+				return res.status(200).json({
+					message: "Product successfully updated!",
+					data: updateData
+				});
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			});
+		}
+	},
+
+	deleteProduct: async (req, res) => {
+		try {
+			await sequelize.transaction(async (t) => {
+				const result = await Product.update({
+					isActive: false,
+				},
+					{
+						where: {
+							id: req.params.id
+						}
+					}, { transaction: t })
+				return res.status(200).json({
+					message: "Product successfully updated."
+
+				})
+			})
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	}
 };
 
 module.exports = productController;
