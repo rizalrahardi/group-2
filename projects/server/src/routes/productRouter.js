@@ -13,6 +13,7 @@ router.post(
     validateProduct.categoryRules,
     errorValidate,
     productController.createCategory
+)
 router.patch(
     "/category/:id",
     verifyToken,

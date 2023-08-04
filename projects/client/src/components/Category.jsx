@@ -31,7 +31,7 @@ const CategoryTable = () => {
     onOpen: onConfirmationOpen,
     onClose: onConfirmationClose,
   } = useDisclosure()
-  
+
   const toast = useToast()
 
   const fetchCategories = async () => {
@@ -46,7 +46,7 @@ const CategoryTable = () => {
           headers,
         }
       );
-      setCategories(data);
+      setCategories(data.result);
     } catch (error) {
 
       console.error("Error fetching data:", error);
@@ -130,7 +130,7 @@ const CategoryTable = () => {
     } catch (error) {
       toast({
         title: "Failed to edit data",
-        description: error.response.data.message || error.response.data.errors[0].msg ,
+        description: error.response.data.message || error.response.data.errors[0].msg,
         status: "error",
         duration: "2000",
         isClosable: true,
@@ -189,13 +189,13 @@ const CategoryTable = () => {
 
   return (
     <>
-    <Flex justifyContent="flex-end" mb={4}>
-    <Button colorScheme="teal" onClick={onOpen}>
-        Create Category
-        <FormCreateCategory isOpen={isOpen} onClose={onClose} onSubmit={handleCreateCategory} />
-      </Button>
-    </Flex>
-      
+      <Flex justifyContent="flex-end" mb={4}>
+        <Button colorScheme="teal" onClick={onOpen}>
+          Create Category
+          <FormCreateCategory isOpen={isOpen} onClose={onClose} onSubmit={handleCreateCategory} />
+        </Button>
+      </Flex>
+
       <TableContainer>
         <Table variant="striped" colorScheme="teal">
           <Thead>
@@ -221,18 +221,18 @@ const CategoryTable = () => {
                 <Td>
                   {editingCategoryId === category.id ? (
                     <>
-                    <ButtonGroup gap={"1"}>
-                    <IconButton
-                        icon={<CheckIcon />}
-                        colorScheme="green"
-                        onClick={() => handleSave(category.id)}
-                      />
-                      <IconButton
-                        icon={<CloseIcon />}
-                        colorScheme="red"
-                        onClick={handleCancel}
-                      />
-                    </ButtonGroup>
+                      <ButtonGroup gap={"1"}>
+                        <IconButton
+                          icon={<CheckIcon />}
+                          colorScheme="green"
+                          onClick={() => handleSave(category.id)}
+                        />
+                        <IconButton
+                          icon={<CloseIcon />}
+                          colorScheme="red"
+                          onClick={handleCancel}
+                        />
+                      </ButtonGroup>
                     </>
                   ) : (
                     <IconButton
