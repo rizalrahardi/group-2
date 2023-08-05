@@ -63,11 +63,6 @@ export default function ModalTransaction({ isOpen, onClose }) {
             })
         }
     };
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // const bayar = document.getElementById("totalBayar").value;
-        dispatch(payment(totalHarga, toast));
-    };
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
