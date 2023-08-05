@@ -6,6 +6,7 @@ import { Avatar, Box, Center, Drawer, DrawerContent, Flex, Image, Square, Text, 
 import SidebarContent from "../components/Sidebar";
 import Products from "../components/Products";
 import NavbarCashier from "../components/NavbarCashier";
+import Cart from "../components/Cart";
 const Home = () => {
 	const [user, setUser] = useState({});
 	const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,8 +43,8 @@ const Home = () => {
 				<Box px={10} width={["100%", "100%", "75%"]} bg={useColorModeValue("gray.100", "gray.900")}>
 					<Products />
 				</Box>
-				<Box px={10} width={["100%", "100%", "25%"]} bg='green'>
-					<Text fontSize={"2xl"}>Transaction</Text>
+				<Box px={10} width={["100%", "100%", "25%"]} bg='white'>
+					<Cart />
 				</Box>
 			</Flex>
 		</>
