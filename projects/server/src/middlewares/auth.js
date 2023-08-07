@@ -41,7 +41,39 @@ const isVerified = async (req, res, next) => {
 	}
 };
 
+const isAdmin = async (req, res, next) => {
+	try {
+		const user = await User.findByPk(req.User.id);
+		const userRole = user.role
+		console.log('ini user role', userRole)
+		if (userRole !== "admin") {
+			return res.status(403).json({ error: "user tidak diizinkan mengakses fitur admin" });
+		}
+		next();
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Terjadi kesalahan saat memeriksa peran pengguna.' });
+	}
+};
+
+const isCashier = async (req, res, next) => {
+	try {
+		const user = await User.findByPk(req.User.id);
+		const userRole = user.role
+		if (userRole !== "cashier") {
+			return res.status(403).json({ error: "user tidak diizinkan mengakses fitur cashier" });
+		}
+		next();
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Terjadi kesalahan saat memeriksa peran pengguna.' });
+	}
+};
+
+
 module.exports = {
 	verifyToken,
 	isVerified,
+	isAdmin,
+	isCashier
 };

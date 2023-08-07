@@ -15,11 +15,12 @@ import Products from "../components/Products"
 import Report from "../components/Report"
 import HomeAdmin from "../components/HomeAdmin"
 import Category from "../components/Category"
+import { useNavigate } from "react-router-dom"
 const Admin = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [user, setUser] = useState({});
 	const [activeContent, setActiveContent] = useState("home")
-
+	const navigate = useNavigate()
 	const fetchUser = async () => {
 		try {
 			const token = localStorage.getItem("token");
@@ -46,6 +47,10 @@ const Admin = () => {
 	};
 
 	const renderContent = () => {
+		if (user.role === 'cashier') {
+			alert('You do not have permission to access this page')
+			navigate('/home')
+		}
 		switch (activeContent) {
 			case "home":
 				return <HomeAdmin />;

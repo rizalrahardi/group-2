@@ -35,6 +35,11 @@ const Home = () => {
 	useEffect(() => {
 		fetchUser();
 	}, []);
+
+	if (user.role === 'admin') {
+		alert('You do not have permission to access this page')
+		navigate('/admin')
+	}
 	return (
 		<>
 			<NavbarCashier user={user} />

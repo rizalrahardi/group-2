@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { productController } = require('../controllers');
-const { verifyToken } = require("../middlewares/auth");
+const { verifyToken, isAdmin } = require("../middlewares/auth");
 const { errorValidate } = require("../middlewares");
 const { multerUpload } = require("../middlewares/multer");
 const { validateProduct } = require("../services");
@@ -10,6 +10,7 @@ router.get("/category", verifyToken, productController.getCategory)
 router.post(
     "/category",
     verifyToken,
+    isAdmin,
     validateProduct.categoryRules,
     errorValidate,
     productController.createCategory

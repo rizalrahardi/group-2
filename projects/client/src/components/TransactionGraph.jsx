@@ -18,7 +18,7 @@ const TransactionGraph = () => {
         try {
             const formattedStartDate = startDate.toISOString().split('T')[0];
             const formattedEndDate = endDate.toISOString().split('T')[0];
-            const { data } = await axios.get(`http://localhost:8000/api/transaction/coba?startDate=${formattedStartDate}&endDate=${formattedEndDate}`);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/transaction?startDate=${formattedStartDate}&endDate=${formattedEndDate}`);
             setGraphData(data.data);
             console.log(data.data);
         } catch (error) {

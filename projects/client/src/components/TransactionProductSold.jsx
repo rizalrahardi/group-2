@@ -14,7 +14,7 @@ const ProductSoldTable = () => {
             const formattedStartDate = startDate ? startDate.toISOString().split('T')[0] : '';
             const formattedEndDate = endDate ? endDate.toISOString().split('T')[0] : '';
             const { data } = await axios.get(
-                `http://localhost:8000/api/transaction/product?startDate=${formattedStartDate}&endDate=${formattedEndDate}`
+                `${process.env.REACT_APP_API_BASE_URL}/transaction/product?startDate=${formattedStartDate}&endDate=${formattedEndDate}`
             );
 
             // Menggunakan objek Map untuk menghindari redundansi data produk dan menambahkan jumlah quantity
