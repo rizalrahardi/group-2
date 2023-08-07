@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Box, Select, Flex, Button, Input } from '@chakra-ui/react';
+import { Box, Select, Flex, Input } from '@chakra-ui/react';
 import axios from 'axios';
 
 const FilterProducts = ({
@@ -18,26 +18,19 @@ const FilterProducts = ({
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
     };
-
     const handleCategoryChange = (e) => {
         setCategoryId(e.target.value);
     };
-
     const handlePriceChange = (e) => {
         setPrice(e.target.value);
     };
-
     const handleSortChange = (e) => {
         setSort(e.target.value);
     };
-
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
-
     const [category, setCategory] = useState([]);
-
-
     const categories = async () => {
         try {
             const { data } = await axios.get(

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Center, Container, Divider, Flex, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, Tag, TagLabel, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, useColorModeValue } from '@chakra-ui/react';
 import FilterProducts from './FilterProducts';
 import Pagination from './Pagination';
 import CreateProduct from './CreateProduct';
@@ -18,17 +17,14 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
-
     const [modal, setModal] = useState(false);
     const [editProduct, setEditProduct] = useState(null);
     const location = useLocation();
     const isAdminPage = location.pathname === '/admin';
-    // Function to handle opening the Edit Product Modal
+    const isCashierPage = location.pathname === '/home';
     const handleEditModalOpen = (product) => {
         setEditProduct(product);
     };
-
-    // Function to handle closing the Edit Product Modal
     const handleEditModalClose = () => {
         setEditProduct(null);
     };
@@ -38,8 +34,6 @@ const Products = () => {
     const handleModalClose = () => {
         setModal(false);
     }
-
-
     const fetchProducts = async () => {
         try {
             const headers = {
@@ -110,7 +104,6 @@ const Products = () => {
                 </ModalContent>
             </Modal>
             {isAdminPage && (
-
                 <Button mb={4} colorScheme="teal" onClick={handleModalOpen}>
                     Create Product
                 </Button>
@@ -127,15 +120,17 @@ const Products = () => {
                     </ModalContent>
                 </Modal>
                 <br />
-                {product.map((item) => (
-                    <ProductCard
-                        key={item.id}
-                        product={item}
-                        handleEditModalOpen={handleEditModalOpen}
-                    />
-                ))}
+                {product
+                    .filter((item) => (isCashierPage ? item.isActive : true))
+                    .map((item) => (
+                        <ProductCard
+                            key={item.id}
+                            product={item}
+                            handleEditModalOpen={handleEditModalOpen}
+                        />
+                    ))}
             </Flex>
-          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
     );
 };

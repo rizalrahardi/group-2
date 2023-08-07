@@ -6,7 +6,6 @@ import { Card, CardBody, CardFooter, Stack, Heading, Center, Text, Divider, Butt
 const ProductCard = ({ product, handleEditModalOpen }) => {
     const location = useLocation();
     const dispatch = useDispatch();
-
     const isAdminPage = location.pathname === '/admin';
     const isCashierPage = location.pathname === '/home';
     return (
@@ -24,13 +23,16 @@ const ProductCard = ({ product, handleEditModalOpen }) => {
                 <Stack mt='6' spacing='3'>
                     <Heading size='md'>{product.name}</Heading>
                     <Center>
-                        <Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}>
+                        {product.Category ? (<Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}>
                             {product.Category.name}
-                        </Text>
+                        </Text>) : (<Text py={1} px={4} borderRadius={'full'} bgColor={'teal.100'} width={'fit-content'}></Text>)}
+
                     </Center>
-                    <Text color='teal.600'>
-                        {product.isActive ? <Text color='teal.600'>Active</Text> : <Text color={'red.600'}>Inactive</Text>}
-                    </Text>
+                    {isAdminPage && (
+                        <Text color='teal.600'>
+                            {product.isActive ? <Text color='teal.600'>Active</Text> : <Text color={'red.600'}>Inactive</Text>}
+                        </Text>
+                    )}
                     <Text color='teal.600' fontSize='2xl'>
                         Rp. {product.price}
                     </Text>
