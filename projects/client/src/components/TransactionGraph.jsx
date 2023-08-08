@@ -16,9 +16,13 @@ const TransactionGraph = () => {
 
     const fetchData = async () => {
         try {
+            const headers = {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
             const formattedStartDate = startDate.toISOString().split('T')[0];
             const formattedEndDate = endDate.toISOString().split('T')[0];
-            const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/transaction?startDate=${formattedStartDate}&endDate=${formattedEndDate}`);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/transaction?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, { headers });
             setGraphData(data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
