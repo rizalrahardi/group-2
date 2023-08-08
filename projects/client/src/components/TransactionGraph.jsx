@@ -20,7 +20,6 @@ const TransactionGraph = () => {
             const formattedEndDate = endDate.toISOString().split('T')[0];
             const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/transaction?startDate=${formattedStartDate}&endDate=${formattedEndDate}`);
             setGraphData(data.data);
-            console.log(data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }

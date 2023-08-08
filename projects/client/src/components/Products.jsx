@@ -55,7 +55,6 @@ const Products = () => {
                     headers
                 }
             );
-            console.log(data.products);
             setProduct(data.products);
             setTotalPages(data.totalPages);
         } catch (error) {

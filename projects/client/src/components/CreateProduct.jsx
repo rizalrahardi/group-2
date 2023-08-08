@@ -79,8 +79,6 @@ const CreateProduct = () => {
             });
         }
     };
-    console.log(productImg);
-
 
     return (
         <Box maxW="md" mx="auto">

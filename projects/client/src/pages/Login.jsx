@@ -15,6 +15,8 @@ import {
 	InputGroup,
 	useToast,
 } from "@chakra-ui/react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -24,24 +26,25 @@ import logo from "../assets/images/logo-main.png";
 const Login = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [formData, setFormData] = useState({});
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
-	const handleInputChange = (e) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[e.target.name]: e.target.value,
-		}));
-	};
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const validationSchema = Yup.object().shape({
+		username: Yup.string().required("Username is required"),
+		password: Yup.string()
+			.required("Password is required")
+			.min(6, "Password must be at least 6 characters")
+			.matches(
+				/^(?=.*[A-Z])(?=.*\W)(?=.*\d)/,
+				"Password must contain at least one uppercase letter, one digit, and one special character"
+			),
+	});
+	const handleSubmit = async (values) => {
 		setIsLoading(true);
 		setError(null);
 
 		try {
-			const { username, password } = formData;
+			const { username, password } = values;
 			const { data } = await axios.post(
 				`${process.env.REACT_APP_API_BASE_URL}/auth/login`,
 				{
@@ -49,7 +52,6 @@ const Login = () => {
 					password: password,
 				}
 			);
-			setFormData(data);
 			setIsLoading(false);
 			toast({
 				title: "Login Success",
@@ -66,7 +68,6 @@ const Login = () => {
 		} catch (error) {
 			setIsLoading(false);
 			setError(`Error login: ` + error.response.data.errors[0].msg);
-			console.error(error);
 		}
 	};
 
@@ -118,86 +119,108 @@ const Login = () => {
 								{error}
 							</Alert>
 						)}
-						<form onSubmit={handleSubmit}>
-							<Stack spacing={4}>
-								<FormControl id="username" isRequired>
-									<FormLabel>Username</FormLabel>
-									<InputGroup>
-										<Input
-											type="text"
-											name="username"
-											placeholder="username"
-											value={formData.username}
-											onChange={handleInputChange}
-											bg={"gray.100"}
-											border={0}
-											color={"gray.500"}
-											_placeholder={{
-												color: "gray.500",
-											}}
-										/>
-										<InputRightElement width="3.5rem">
-											<Button
-												size={"md"}
-												bg="transparent"
-												_focus={{ outline: "none" }}
-												_active={{ outline: "none" }}
-												_hover={{ color: "teal.500" }}
-											>
-												<AiOutlineUser />
-											</Button>
-										</InputRightElement>
-									</InputGroup>
-								</FormControl>
-								<FormControl id="password" isRequired>
-									<FormLabel>Password</FormLabel>
-									<InputGroup>
-										<Input
-											type={showPassword ? "text" : "password"}
-											name="password"
-											placeholder="password"
-											value={formData.password}
-											onChange={handleInputChange}
-											bg={"gray.100"}
-											border={0}
-											color={"gray.500"}
-											_placeholder={{
-												color: "gray.500",
-											}}
-										/>
-										<InputRightElement width="3.5rem">
-											<Button
-												h="1.75rem"
-												size="md"
-												onClick={() => setShowPassword(!showPassword)}
-												bg="transparent"
-												_focus={{ outline: "none" }}
-												_active={{ outline: "none" }}
-												_hover={{ color: "teal.500" }}
-											>
-												{showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-											</Button>
-										</InputRightElement>
-									</InputGroup>
-								</FormControl>
-							</Stack>
-							<Button
-								type="submit"
-								fontFamily={"heading"}
-								mt={8}
-								w={"full"}
-								bgGradient="linear(to-r, blue.400,teal.400)"
-								color={"white"}
-								_hover={{
-									bgGradient: "linear(to-r, blue.400,teal.400)",
-									boxShadow: "xl",
-								}}
-								isLoading={isLoading}
-								loadingText="Logging in..."
-							>
-								Submit
-							</Button>
-						</form>
+						<Formik
+							initialValues={{ username: "", password: "" }}
+							validationSchema={validationSchema}
+							onSubmit={handleSubmit}
+						>
+							{({ errors, touched }) => (
+								<Form>
+									<Stack spacing={4}>
+										<FormControl id="username" isRequired>
+											<FormLabel>Username</FormLabel>
+											<InputGroup>
+												<Field
+													as={Input}
+													type="text"
+													name="username"
+													placeholder="username"
+													bg={"gray.100"}
+													border={0}
+													color={"gray.500"}
+													_placeholder={{
+														color: "gray.500",
+													}}
+												/>
+												<InputRightElement width="3.5rem">
+													<Button
+														size={"md"}
+														bg="transparent"
+														_focus={{ outline: "none" }}
+														_active={{ outline: "none" }}
+														_hover={{ color: "teal.500" }}
+													>
+														<AiOutlineUser />
+													</Button>
+												</InputRightElement>
+											</InputGroup>
+											<ErrorMessage name="username">
+												{(msg) => (
+													<Alert status="error" mt={2} mb={2}>
+														<AlertIcon />
+														{msg}
+													</Alert>
+												)}
+											</ErrorMessage>
+										</FormControl>
+										<FormControl id="password" isRequired>
+											<FormLabel>Password</FormLabel>
+											<InputGroup>
+												<Field
+													as={Input}
+													type={showPassword ? "text" : "password"}
+													name="password"
+													placeholder="password"
+													bg={"gray.100"}
+													border={0}
+													color={"gray.500"}
+													_placeholder={{
+														color: "gray.500",
+													}}
+												/>
+												<InputRightElement width="3.5rem">
+													<Button
+														h="1.75rem"
+														size="md"
+														onClick={() => setShowPassword(!showPassword)}
+														bg="transparent"
+														_focus={{ outline: "none" }}
+														_active={{ outline: "none" }}
+														_hover={{ color: "teal.500" }}
+													>
+														{showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+													</Button>
+												</InputRightElement>
+											</InputGroup>
+											<ErrorMessage name="password">
+												{(msg) => (
+													<Alert status="error" mt={2} mb={2}>
+														<AlertIcon />
+														{msg}
+													</Alert>
+												)}
+											</ErrorMessage>
+										</FormControl>
+									</Stack>
+									<Button
+										type="submit"
+										fontFamily={"heading"}
+										mt={8}
+										w={"full"}
+										bgGradient="linear(to-r, blue.400,teal.400)"
+										color={"white"}
+										_hover={{
+											bgGradient: "linear(to-r, blue.400,teal.400)",
+											boxShadow: "xl",
+										}}
+										isLoading={isLoading}
+										loadingText="Logging in..."
+									>
+										Login
+									</Button>
+								</Form>
+							)}
+						</Formik>
 						<Button
 							mt={2}
 							colorScheme="teal"
@@ -209,7 +232,7 @@ const Login = () => {
 					</Box>
 				</Stack>
 			</Container>
-		</Box>
+		</Box >
 	);
 };
 

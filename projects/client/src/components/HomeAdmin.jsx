@@ -3,6 +3,7 @@ import TransactionGraph from './TransactionGraph'
 import ProductSoldTable from './TransactionProductSold'
 import SalesReport from './TransactionReport'
 import { Button } from '@chakra-ui/react'
+import TransactionTable from './TransactionProduct'
 // import CreateProduct from './CreateProduct'
 
 const HomeAdmin = () => {
@@ -35,6 +36,7 @@ const HomeAdmin = () => {
             <div id="product-sold-table">
                 <ProductSoldTable />
             </div>
+            <TransactionTable />
             <Button mt={4} colorScheme="teal" onClick={handlePrint}>
                 Print Sales Report
             </Button>

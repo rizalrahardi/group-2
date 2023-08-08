@@ -58,7 +58,12 @@ const UpdateCashier = () => {
             setCashiers(data.cashiers);
             setTotalPages(data.totalPages);
         } catch (error) {
-            console.error(error);
+            toast({
+                title: "Fetch cashier failed",
+                status: "error",
+                duration: 3000,
+                isClosable: true
+            })
         }
     };
 
@@ -67,7 +72,6 @@ const UpdateCashier = () => {
     }, [page]);
 
     const onPageChange = (newPage) => {
-        console.log("newPage", newPage);
         setPage(newPage);
     }
 
