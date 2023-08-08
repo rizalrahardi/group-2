@@ -10,11 +10,15 @@ const ProductSoldTable = () => {
     const [productSoldData, setProductSoldData] = useState([]);
     const fetchProductSoldData = async () => {
         try {
+            const headers = {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
             const formattedStartDate = startDate ? startDate.toISOString().split('T')[0] : '';
             const formattedEndDate = endDate ? endDate.toISOString().split('T')[0] : '';
             const { data } = await axios.get(
                 `${process.env.REACT_APP_API_BASE_URL}/transaction/product?startDate=${formattedStartDate}&endDate=${formattedEndDate}`
-            );
+                , { headers });
 
             const productMap = new Map();
             data.productSold.forEach((item) => {
