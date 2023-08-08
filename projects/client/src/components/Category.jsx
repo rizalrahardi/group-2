@@ -81,7 +81,6 @@ const CategoryTable = () => {
       });
 
     } catch (error) {
-      console.log(error)
       toast({
         title: "Create category can't be completed",
         description: error.response.data.message || error.response.data.errors[0].msg,
@@ -136,7 +135,6 @@ const CategoryTable = () => {
         duration: "2000",
         isClosable: true,
       })
-      console.error("Error updating category:", error);
     }
   };
 
@@ -182,7 +180,6 @@ const CategoryTable = () => {
         isClosable: true,
       })
 
-      console.error("Error deleting category:", error);
     } finally {
       setSelectedCategoryId(null);
       onConfirmationClose();

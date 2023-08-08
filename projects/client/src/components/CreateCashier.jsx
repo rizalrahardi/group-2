@@ -37,7 +37,6 @@ const FormCreateCashier = () => {
                 role: "",
                 isActive: "",
             });
-            console.log(response);
             toast({
                 title: "Create cashier success",
                 status: "success",
@@ -45,7 +44,6 @@ const FormCreateCashier = () => {
                 isClosable: true,
             })
         } catch (error) {
-            console.error(error);
             toast({
                 title: "Create cashier failed",
                 status: "error",

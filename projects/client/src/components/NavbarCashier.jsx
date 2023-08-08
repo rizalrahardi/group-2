@@ -27,7 +27,6 @@ import logo from "../assets/images/logo-nav.png"
 export default function NavbarCashier({ user }) {
     const { colorMode, toggleColorMode } = useColorMode()
     const [imgProfile, setImgProfile] = useState(user.imgProfile)
-    console.log('ini imgprofile', user.imgProfile)
     const navigate = useNavigate()
     const toast = useToast()
     const handleLogout = () => {
@@ -44,7 +43,6 @@ export default function NavbarCashier({ user }) {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             }
-            console.log(headers)
             await axios.patch(
                 `${process.env.REACT_APP_API_BASE_URL}/user/cashier`,
                 formData,
@@ -58,7 +56,6 @@ export default function NavbarCashier({ user }) {
                 isClosable: true
             })
         } catch (error) {
-            console.error(error)
             toast({
                 title: "Error",
                 description: error.message,

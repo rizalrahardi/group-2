@@ -13,23 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { payment } from "../redux/reducer/cartSlice";
 import axios from "axios";
-import { deleteCart } from "../redux/reducer/cartSlice";
+import { deleteAllCart } from "../redux/reducer/cartSlice";
 
 export default function ModalTransaction({ isOpen, onClose }) {
     const toast = useToast();
     const [uangCustomer, setUangCustomer] = useState(0);
-    const [kembalian, setKembalian] = useState(0);
     const { cart, totalHarga } = useSelector((state) => state.ProductReducer);
     const dispatch = useDispatch();
-
-    const handleReload = () => {
-        window.location.reload()
-      };
-
-    console.log("ini product modal transaction", cart);
-
     const handleCheckout = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -37,10 +28,7 @@ export default function ModalTransaction({ isOpen, onClose }) {
                 productId: item.id,
                 quantity: item.quantity,
             }));
-            const body = JSON.stringify({ items });
-            console.log("Data yang akan dikirim ke server:", body);
-
-            const response = await axios.post(
+            await axios.post(
                 "http://localhost:8000/api/transaction",
                 { items },
                 {
@@ -49,7 +37,6 @@ export default function ModalTransaction({ isOpen, onClose }) {
                     },
                 }
             );
-
             toast({
                 title: "Success",
                 description: "Transaction successful",
@@ -57,8 +44,9 @@ export default function ModalTransaction({ isOpen, onClose }) {
                 duration: 3000,
                 isClosable: true,
             })
+            dispatch(deleteAllCart())
+            onClose()
         } catch (error) {
-            console.error("Error:", error);
             toast({
                 title: "Failed",
                 description: "Transaction failed",
@@ -73,17 +61,10 @@ export default function ModalTransaction({ isOpen, onClose }) {
         event.preventDefault();
         handleCheckout();
     };
-    function handlePay() {
-        const total = uangCustomer - totalHarga;
-        setKembalian(total);
-    }
-    function reset() {
-        setKembalian(0);
-    }
     const hitungKembalian = () => {
         const kembalian = uangCustomer - totalHarga;
         return kembalian > 0 ? kembalian : null;
-      };
+    };
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -101,20 +82,14 @@ export default function ModalTransaction({ isOpen, onClose }) {
                                 _hover={{ borderColor: "green" }}
                             ></Input>
                             {hitungKembalian() !== null && hitungKembalian() > 0 && (
-                            <Text>Kembalian : Rp. {hitungKembalian()}</Text>
+                                <Text>Kembalian : Rp. {hitungKembalian()}</Text>
                             )}
                         </ModalBody>
-                        
+
                         <ModalFooter gap={"10px"}>
-                            <Button type="submit" 
-                            onClick={() => {handlePay() 
-                                onClose()
-                                handleReload()
-                                }} colorScheme="green">
+                            <Button type="submit"
+                                colorScheme="green">
                                 Process
-                            </Button>
-                            <Button mr={3} onClick={reset}>
-                                Reset
                             </Button>
                         </ModalFooter>
                     </form>
