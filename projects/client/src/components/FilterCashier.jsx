@@ -14,7 +14,8 @@ const FilterCashier = ({ handleFilter, activeFilter, searchQuery, setSearchQuery
         }
     };
     return (
-        <Flex>
+        <Flex p={{ base: 4, sm: 6, md: 8 }} flexDirection={{ base: 'column', md: 'row' }}
+        alignItems={{ base: 'flex-start', md: 'center' }} >
             <Input
                 width={'200px'}
                 colorScheme="white"
@@ -25,37 +26,44 @@ const FilterCashier = ({ handleFilter, activeFilter, searchQuery, setSearchQuery
                 value={searchQuery}
                 onChange={handleSearch}
                 placeholder="Search..."
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
             />
             <Button
-                mx={2}
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
                 colorScheme={isActive("username=a-z") ? "teal" : "gray"}
                 onClick={() => handleFilter("username=a-z")}
             >
                 Sort Username A-Z
             </Button>
             <Button
-                mr={2}
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
                 colorScheme={isActive("username=z-a") ? "teal" : "gray"}
                 onClick={() => handleFilter("username=z-a")}
             >
                 Sort Username Z-A
             </Button>
             <Button
-                mr={2}
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
                 colorScheme={isActive("sort=newest") ? "teal" : "gray"}
                 onClick={() => handleFilter("sort=newest")}
             >
                 Newest
             </Button>
             <Button
-                mr={2}
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
                 colorScheme={isActive("sort=oldest") ? "teal" : "gray"}
                 onClick={() => handleFilter("sort=oldest")}
             >
                 Oldest
             </Button>
             <Button
-                mr={2}
+                mb={{ base: '2', md: '0' }}
+                mr={{ base: '0', md: '2' }}
                 colorScheme={isActive("isActive=true") ? "teal" : "gray"}
                 onClick={() => handleFilter("isActive=true")}
             >

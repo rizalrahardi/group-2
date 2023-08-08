@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { payment } from "../redux/reducer/cartSlice";
 import axios from "axios";
+import { deleteCart } from "../redux/reducer/cartSlice";
 
 export default function ModalTransaction({ isOpen, onClose }) {
     const toast = useToast();
@@ -22,6 +23,10 @@ export default function ModalTransaction({ isOpen, onClose }) {
     const [kembalian, setKembalian] = useState(0);
     const { cart, totalHarga } = useSelector((state) => state.ProductReducer);
     const dispatch = useDispatch();
+
+    const handleReload = () => {
+        window.location.reload()
+      };
 
     console.log("ini product modal transaction", cart);
 
@@ -75,6 +80,10 @@ export default function ModalTransaction({ isOpen, onClose }) {
     function reset() {
         setKembalian(0);
     }
+    const hitungKembalian = () => {
+        const kembalian = uangCustomer - totalHarga;
+        return kembalian > 0 ? kembalian : null;
+      };
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -91,11 +100,17 @@ export default function ModalTransaction({ isOpen, onClose }) {
                                 borderColor={"blue"}
                                 _hover={{ borderColor: "green" }}
                             ></Input>
-                            <Text>Kembalian : {kembalian}</Text>
+                            {hitungKembalian() !== null && hitungKembalian() > 0 && (
+                            <Text>Kembalian : Rp. {hitungKembalian()}</Text>
+                            )}
                         </ModalBody>
-
+                        
                         <ModalFooter gap={"10px"}>
-                            <Button type="submit" onClick={handlePay} colorScheme="green">
+                            <Button type="submit" 
+                            onClick={() => {handlePay() 
+                                onClose()
+                                handleReload()
+                                }} colorScheme="green">
                                 Process
                             </Button>
                             <Button mr={3} onClick={reset}>

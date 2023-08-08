@@ -10,6 +10,9 @@ const loginRules = [
 			if (!user) {
 				throw new Error("Username salah atau tidak terdaftar");
 			}
+			if(user.isActive === false){
+				throw new Error("Akun tidak aktif")
+			}
 			req.user = user;
 		}),
 	body("password")

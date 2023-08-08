@@ -16,50 +16,48 @@ import * as Yup from "yup"
 
 export const ForgotPassword = () => {
     const toast = useToast();
-
+    
     const forgot = async () => {
         try{
-            
             const res = await axios.put("http://localhost:8000/api/auth/password", {
-                email: formik.values.email
-        }
-            )
+              email: formik.values.email
+            })
+            
             toast({
-                title: 'Forgot Password Success.',
-                description: "Please check your email to reset your password.",
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-              });
-              formik.resetForm()
-              console.log(res)
+              title: 'Forgot Password Success.',
+              description: "Please check your email to reset your password.",
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            });
+            
+            formik.resetForm()
         }
-
-            catch(err){
-                toast({
-                    title: `Forgot Password Failed`,
-                    description: err.response.data.errors[0].msg,
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                console.log(err)
-            }
+        catch(err){
+          toast({
+            title: `Forgot Password Failed`,
+            description: err.response.data.errors[0].msg,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
     }
+    
     const formik = useFormik({
-        
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        
-        validationSchema: Yup.object({
+      initialValues: {
+        email: '',
+        password: '',
+      },
+      
+      validationSchema: 
+      Yup.object({
             email: Yup.string()
-                .required("Email is a required field")
-                .email('Invalid email format'),
-           }),
-        
-        onSubmit: forgot
+            .required("Email is a required field")
+            .email('Invalid email format'),
+      }),
+      
+      onSubmit: forgot
     });
 
   return (

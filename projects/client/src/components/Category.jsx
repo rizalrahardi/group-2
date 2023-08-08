@@ -47,17 +47,15 @@ const CategoryTable = () => {
         }
       );
       setCategories(data.result);
-      console.log(data);
     } catch (error) {
-
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     fetchCategories();
-  }, []);
-
+  }, [])
+  
   const handleCreateCategory = async (categoryData) => {
     try {
       const headers = {
@@ -81,6 +79,7 @@ const CategoryTable = () => {
         duration: "2000",
         isClosable: true,
       });
+
     } catch (error) {
       console.log(error)
       toast({
@@ -128,6 +127,7 @@ const CategoryTable = () => {
 
       setEditingCategoryId(null);
       setEditedCategoryName("");
+
     } catch (error) {
       toast({
         title: "Failed to edit data",
@@ -172,6 +172,7 @@ const CategoryTable = () => {
       setCategories((prevCategories) =>
         prevCategories.filter((category) => category.id !== selectedCategoryId)
       );
+
     } catch (error) {
       toast({
         title: "Failed to delete category",
@@ -212,8 +213,9 @@ const CategoryTable = () => {
                 <Td>
                   {editingCategoryId === category.id ? (
                     <Input
-                      value={editedCategoryName}
-                      onChange={(e) => setEditedCategoryName(e.target.value)}
+                    isRequired
+                    value={editedCategoryName}
+                    onChange={(e) => setEditedCategoryName(e.target.value)}
                     />
                   ) : (
                     category.name

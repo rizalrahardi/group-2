@@ -32,7 +32,7 @@ const MobileNav = ({ user, onOpen, ...rest }) => {
 	const navgite = useNavigate();
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		navgite("/login");
+		navgite("/");
 	}
 	return (
 		<Flex
