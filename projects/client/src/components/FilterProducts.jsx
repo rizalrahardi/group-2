@@ -52,18 +52,21 @@ const FilterProducts = ({
     }, []);
     return (
         <Box p="4" mb="4" borderWidth="1px" rounded="lg" bg={'white'} my="4" color={'black'}>
-            <Flex alignItems="center" mb="2">
+            <Flex flexDirection={{ base: 'column', md: 'row' }} alignItems={{ base: 'flex-start', md: 'center' }}
+            justifyContent="space-between" mb="2" >
                 <Input
                     placeholder="Search products..."
                     value={search}
                     onChange={handleSearchChange}
-                    mr="2"
+                    mb={{ base: '2', md: '0' }}
+                    mr={{ base: '0', md: '2' }}
                 />
                 <Select
                     placeholder="Select Category"
                     value={categoryId}
                     onChange={handleCategoryChange}
-                    mr="2"
+                    mb={{ base: '2', md: '0' }}
+                    mr={{ base: '0', md: '2' }}
                 >
                     <option value="">All Categories</option>
                     {category.map((item) => (
@@ -75,7 +78,8 @@ const FilterProducts = ({
                     placeholder="Select Price"
                     value={price}
                     onChange={handlePriceChange}
-                    mr="2"
+                    mb={{ base: '2', md: '0' }}
+                    mr={{ base: '0', md: '2' }}
                 >
                     <option value="">All Prices</option>
                     <option value="asc">Lowest Price</option>
@@ -85,7 +89,8 @@ const FilterProducts = ({
                     placeholder="Sort by"
                     value={sort}
                     onChange={handleSortChange}
-                    mr="2"
+                    mb={{ base: '2', md: '0' }}
+                    mr={{ base: '0', md: '2' }}
                 >
                     <option value="">Default</option>
                     <option value="asc">Oldest</option>

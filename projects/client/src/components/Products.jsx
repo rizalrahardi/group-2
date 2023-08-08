@@ -85,7 +85,7 @@ const Products = () => {
                 name={name}
                 setName={setName}
             />
-            <Text fontSize="2xl" fontWeight="bold" mb="4" color={useColorModeValue('gray.800', 'white')}>
+            <Text fontSize="2xl" fontWeight="bold" mb="2" color={useColorModeValue('gray.800', 'white')}>
                 Products
             </Text>
             <Modal isOpen={!!editProduct} onClose={handleEditModalClose}>
@@ -119,7 +119,6 @@ const Products = () => {
                         </ModalBody>
                     </ModalContent>
                 </Modal>
-                <br />
                 {product
                     .filter((item) => (isCashierPage ? item.isActive : true))
                     .map((item) => (

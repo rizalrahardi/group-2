@@ -12,7 +12,7 @@ import { Card, CardBody, CardFooter, Stack, Heading, Center, Text, Divider, Butt
     const isAdminPage = location.pathname === '/admin';
     const isCashierPage = location.pathname === '/home';
     return (
-    <Card w={{ base: "100%", md: "25%" }} p={2}>
+    <Card w={{ base: '100%', sm: '50%', md: '25%' }} minHeight={0} p={2}>
         <CardBody  bg="white" borderWidth="1px" rounded="lg" shadow="lg" position="relative" h="100%">
             {product.productImg ? (
             <Image
@@ -26,7 +26,7 @@ import { Card, CardBody, CardFooter, Stack, Heading, Center, Text, Divider, Butt
             )}
             <Stack mt='6' spacing='3'>
                 <Text
-                fontSize="lg" as="b"
+                fontSize={["sm", "md", "lg", "xl"]} as="b"
                 fontWeight="semibold"
                 lineHeight="tight"
                 isTruncated>
@@ -43,7 +43,7 @@ import { Card, CardBody, CardFooter, Stack, Heading, Center, Text, Divider, Butt
                     )}
                    </Stack>
                    <Flex mt={3} justifyContent="space-between" alignContent="center">
-                    <Text color='teal.600' fontSize='2xl'>
+                    <Text color='teal.600' fontSize={["md", "lg", "xl", "2xl"]}>
                         Rp. {product.price}
                     </Text>
                     

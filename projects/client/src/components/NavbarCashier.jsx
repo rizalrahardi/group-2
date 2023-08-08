@@ -32,7 +32,7 @@ export default function NavbarCashier({ user }) {
     const toast = useToast()
     const handleLogout = () => {
         localStorage.removeItem("token")
-        navigate("/login")
+        navigate("/")
     }
 
     const handleChangeAvatar = async () => {
