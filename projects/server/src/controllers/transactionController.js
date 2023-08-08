@@ -103,7 +103,38 @@ const transactionController = {
 			return res.status(400).json({ message: error.message });
 		}
 	},
-
+	getTransaction: async (req, res) => {
+		try {
+			const transaction = await Transaction.findAll({
+				include: [
+					{ model: User },
+				],
+			})
+			return res.status(200).json({ data: transaction });
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	},
+	getTransactionById: async (req, res) => {
+		try {
+			const id = req.params.id;
+			const transactionItem = await TransactionItem.findAll({
+				where: {
+					transactionId: id,
+				},
+				include: [
+					{ model: Product },
+				]
+			})
+			return res.status(200).json({ data: transactionItem });
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	}
 
 };
 

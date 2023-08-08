@@ -183,11 +183,11 @@ const productController = {
 			};
 			if (req.file && req.file.path) {
 				updateData.productImg = req.file.path;
-			}
-			if (product.productImg && fs.existsSync(product.productImg)) {
-				fs.unlinkSync(product.productImg);
-			}
 
+				if (product.productImg && fs.existsSync(product.productImg)) {
+					fs.unlinkSync(product.productImg);
+				}
+			}
 			await sequelize.transaction(async (t) => {
 				const result = await Product.update(
 					updateData,

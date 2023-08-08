@@ -11,13 +11,16 @@ const ProductSoldTable = () => {
     console.log('data productsold', productSoldData);
     const fetchProductSoldData = async () => {
         try {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
             const formattedStartDate = startDate ? startDate.toISOString().split('T')[0] : '';
             const formattedEndDate = endDate ? endDate.toISOString().split('T')[0] : '';
             const { data } = await axios.get(
-                `${process.env.REACT_APP_API_BASE_URL}/transaction/product?startDate=${formattedStartDate}&endDate=${formattedEndDate}`
+                `${process.env.REACT_APP_API_BASE_URL}/transaction/product?startDate=${formattedStartDate}&endDate=${formattedEndDate}`, { headers }
             );
 
-            // Menggunakan objek Map untuk menghindari redundansi data produk dan menambahkan jumlah quantity
             const productMap = new Map();
             console.log('adfasd', productMap);
 
@@ -27,12 +30,10 @@ const ProductSoldTable = () => {
                 const price = item.Product.price;
                 const totalQuantity = parseInt(item.totalQuantity);
                 if (productMap.has(productId)) {
-                    // Jika produk sudah ada di Map, tambahkan jumlah quantity
                     const existingItem = productMap.get(productId);
                     existingItem.totalQuantity += totalQuantity;
                     existingItem.totalPrice += totalQuantity * price;
                 } else {
-                    // Jika produk belum ada di Map, tambahkan sebagai entri baru
                     productMap.set(productId, {
                         Product: { id: productId, name: productName, price: price },
                         totalQuantity: totalQuantity,
@@ -40,8 +41,6 @@ const ProductSoldTable = () => {
                     });
                 }
             });
-
-            // Konversi kembali ke array dan simpan dalam state
             setProductSoldData(Array.from(productMap.values()));
         } catch (error) {
             console.error('Error fetching product sold data:', error);

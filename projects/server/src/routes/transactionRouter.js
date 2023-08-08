@@ -3,8 +3,8 @@ const { verifyToken, isCashier } = require("../middlewares/auth");
 const transactionController = require("../controllers/transactionController");
 
 router.post("/transaction", verifyToken, isCashier, transactionController.createTransaction);
-// router.get("/transaction", verifyToken, transactionController.getTransactions);
-// router.get("/transaction", verifyToken, transactionController.getSalesReportByDateRange);
-router.get("/transaction", transactionController.getDaily)
-router.get('/transaction/product', transactionController.getProductSold)
+router.get("/transaction", verifyToken, transactionController.getDaily)
+router.get('/transaction/product', verifyToken, transactionController.getProductSold)
+router.get('/transaction/all', transactionController.getTransaction)
+router.get('/transaction/:id', transactionController.getTransactionById)
 module.exports = router

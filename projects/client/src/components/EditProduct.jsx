@@ -19,6 +19,7 @@ const EditProduct = ({ product, handleModalClose }) => {
     const [categoryId, setCategoryId] = useState(product.categoryId)
     const [isActive, setIsActive] = useState(product.isActive)
     const [productImg, setProductImg] = useState(product.productImg)
+    const [isImageChange, setImageChange] = useState(false)
     console.log("iniiii", productImg)
     console.log('category', categoryId);
     const [categories, setCategories] = useState([]);
@@ -62,7 +63,7 @@ const EditProduct = ({ product, handleModalClose }) => {
         formData.append('categoryId', updatedProduct.categoryId);
         formData.append('isActive', updatedProduct.isActive);
         // formData.append('products', updatedProduct.productImg);
-        if (productImg) {
+        if (isImageChange) {
             formData.append('products', updatedProduct.productImg);
         }
         try {
@@ -151,7 +152,11 @@ const EditProduct = ({ product, handleModalClose }) => {
                     type="file"
                     id="products"
                     accept="image/*"
-                    onChange={(e) => setProductImg(e.target.files[0])}
+                    onChange={(e) => {
+                        setProductImg(e.target.files[0]);
+                        setImageChange(true);
+                    }}
+
                 />
             </FormControl>
             <Button mt={4} colorScheme="teal" type="submit">
