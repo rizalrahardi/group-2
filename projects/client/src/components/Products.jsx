@@ -15,7 +15,7 @@ const Products = () => {
     const [sort, setSort] = useState('');
     const [name, setName] = useState('');
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(9);
     const [totalPages, setTotalPages] = useState(1);
     const [modal, setModal] = useState(false);
     const [editProduct, setEditProduct] = useState(null);

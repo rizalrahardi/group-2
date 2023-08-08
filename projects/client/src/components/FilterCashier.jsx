@@ -14,7 +14,7 @@ const FilterCashier = ({ handleFilter, activeFilter, searchQuery, setSearchQuery
         }
     };
     return (
-        <Flex>
+        <Flex p={{ base: 4, sm: 6, md: 8 }} >
             <Input
                 width={'200px'}
                 colorScheme="white"

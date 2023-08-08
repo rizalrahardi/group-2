@@ -21,78 +21,77 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 import { useNavigate } from "react-router-dom";
 
 export const ResetPassword = () => {
-    const navigate = useNavigate()
-
-    const [show1, setShow1] = React.useState(false)
-    const handleClick1 = () => setShow1(!show1)
-
-    const [show2, setShow2] = React.useState(false)
-    const handleClick2 = () => setShow2(!show2)
-
-    const toast = useToast()
-
-    const url = window.location.href.split("/");
-    const token = url[url.length - 1];
-
-    const reset = async () => {
-
-        try{
-            const res = await axios.patch(`http://localhost:8000/api/auth/password`, {
-                password: formik.values.password,
-                confirmPassword: formik.values.confirmPassword
+  const navigate = useNavigate()
+  
+  const [show1, setShow1] = React.useState(false)
+  const handleClick1 = () => setShow1(!show1)
+  
+  const [show2, setShow2] = React.useState(false)
+  const handleClick2 = () => setShow2(!show2)
+  
+  const toast = useToast()
+  
+  const url = window.location.href.split("/");
+  const token = url[url.length - 1];
+  
+  const reset = async () => {
+    try{
+      const res = await axios.patch(`http://localhost:8000/api/auth/password`, {
+        password: formik.values.password,
+        confirmPassword: formik.values.confirmPassword
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-            )
-            toast({
-                title: 'Reset Password Success.',
-                description: "Please try to login to your account.",
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-              });
-              formik.resetForm()
-              navigate("/login")
-              
-              console.log(res)
-        }
-
-            catch(err){
-                toast({
-                    title: `Reset Password Failed`,
-                    description: err.response.data.errors[0].msg,
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                console.log(err)
-            }
+      })
+      
+      toast({
+        title: 'Reset Password Success.',
+        description: "Please try to login to your account.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      
+      formik.resetForm()
+      navigate("/login")
+      
     }
-
-    const formik = useFormik({
-        // initial values
+    catch(err){
+      toast({
+        title: `Reset Password Failed`,
+        description: err.response.data.errors[0].msg,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
+  
+  const formik = useFormik({
         initialValues: {
             password: '',
             confirmPassword: '',
         },
-        // validation schema
-        validationSchema: Yup.object({
-            password: Yup.string()
-                .required('Password is a required field')
-                .min(6, 'Should be more than 6 characters')
-                .matches(/[a-z]/g, 'Should contain at least 1 lowercase')
-                .matches(/[A-Z]/g, 'Should contain at least 1 uppercase')
-                .matches(/[0-9]/g, 'Should contain at least 1 number')
-                .matches(/^\S*$/, 'Should not contain spaces')
-                .matches(/[^\w]/, 'Password requires a symbol'),
-            confirmPassword: Yup.string()
-                .required('Confirm Password is a required field')
-                .oneOf([Yup.ref('password')], 'Password must match')
-           }),
-        // handle submission
+        
+        validationSchema: 
+        Yup.object({
+          password: Yup.string()
+          .required('Password is a required field')
+          .min(6, 'Should be more than 6 characters')
+          .matches(/[a-z]/g, 'Should contain at least 1 lowercase')
+          .matches(/[A-Z]/g, 'Should contain at least 1 uppercase')
+          .matches(/[0-9]/g, 'Should contain at least 1 number')
+          .matches(/^\S*$/, 'Should not contain spaces')
+          .matches(/[^\w]/, 'Password requires a symbol'),
+
+          confirmPassword: 
+          Yup.string()
+          .required('Confirm Password is a required field')
+          .oneOf([Yup.ref('password')], 'Password must match')
+        }),
+
         onSubmit: reset
     });
 
